@@ -5,10 +5,10 @@ const adminSchema = new mongoose.Schema({
     username : String , 
     password : String , 
     email : String,
-    projects : {
+    projects : [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "projects"
-    }
+    }]
 })
 
 const projectSchema = new mongoose.Schema({
@@ -17,7 +17,7 @@ const projectSchema = new mongoose.Schema({
     srcLink : String , 
     imageLink : String,
     liveLink : String,
-    projects : []
+
 })
 const AdminModel = mongoose.model('Admin' , adminSchema);
 const ProjectModel = mongoose.model(  "Projects" , projectSchema )
