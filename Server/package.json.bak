@@ -1,0 +1,14 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "\"test server for portfolio website\"",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kaushal",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
