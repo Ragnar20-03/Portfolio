@@ -142,8 +142,40 @@ router.get('/projects/:id', adminMiddleware, async (req, res) => {
     })
 })
 
-router.post('/updateProject', async (req, res) => {
-
+router.post('/updateProject/:id', async (req, res) => {
+    if (!mongoose.isValidObjectId(req.params.id))
+    {
+        return res.status(200).json({
+            msg : "Invalid ProjectId!"
+        })
+    }
+    console.log("Valid");
+    let id = new mongoose.Types.ObjectId(req.params.id)
+    ProjectModel.updateOne({
+        _id : id
+    },{
+        $set : {
+            projectName : req.body.projectName
+        }
+    }).then((response) =>{
+        console.log(response);
+        if (response.matchedCount > 0)
+        {
+            res.status(200).json({
+                msg : "Update Suceesfully!"
+            })
+        }
+        else 
+        {
+            res.status(200).json({
+                msg : "Updation Failed!"
+            })
+        }
+    }).catch((error) => {
+        res.status(401).json({
+            msg : "Smoething Went Wrong"
+        })
+    })
 })
 
 
