@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="d-flex justify-content-around">
+        @for(prj of project; track prj)
+        {
+            <div class="card" style="width: 18.9rem;">
+                <img [src]="prj.img" width="300" height="150">
+                <div class="card-body" style="text-align: center;">
+                    <h5 class="card-title">{{prj.name}}</h5>
+                    <p class="card-text">{{prj.description}}</p>
+                    <a [href]="prj.link" target="_blank"  class="btn btn-outline-dark">Source Code</a>
+                </div>
+            </div>
+        }
+        @empty{
+            <h1>loading</h1>
+            {{project}}
+        }
+    </div>
+</div>
