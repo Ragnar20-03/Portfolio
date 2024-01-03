@@ -28,7 +28,7 @@ export class PortfolioComponent implements OnInit
       this._port.get_projects_http().subscribe({
         next : res => {
           console.log(res);
-          this.project = res.Projects;
+          this.project = res.projects;
         },
         error : err => {
           console.log(err)

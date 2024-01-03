@@ -19,6 +19,6 @@ export class PortfolioServiceService {
 
   get_projects_http()
   {
-    return this._http.get<any>("http://localhost:5000/api/projects")
+    return this._http.get<any>("http://localhost:5100/api/projects")
   }
 }
