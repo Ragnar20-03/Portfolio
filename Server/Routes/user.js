@@ -27,7 +27,7 @@ router.get('/projects/:id' ,async(req, res)=>{
     ProjectModel.findOne({_id : id}).then((r) =>{
         console.log(r);
         res.status(200).json({
-            projects : r
+            project : r
         })
     }).catch((error ) => {
         res.status(401).json({

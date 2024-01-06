@@ -1,0 +1,20 @@
+<!-- projects.component.html -->
+
+<div class="container">
+    <div class="row">
+      <div class="col-md-4 pt-5">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{this. project.projectName }}</h5>
+            <p class="card-text">{{ this.project.projectDescription }}</p>
+            <div class="card-links">
+              <a href="{{ this.project.githubLink }}" target="_blank" class="btn btn-primary">GitHub</a>
+              <a href="{{ this.project.websiteLink }}" target="_blank" class="btn btn-secondary">Website</a>
+              <!-- <button (click)="onView(project._id)" class="btn btn-success">View</button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

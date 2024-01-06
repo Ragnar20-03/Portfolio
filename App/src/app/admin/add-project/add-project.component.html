@@ -1,0 +1,39 @@
+<div class="input-group mb-3 pt-3 m-3 ">
+    <div class="input-group-text">
+      <span>ProjectName</span><input [(ngModel)]="newProject.projectName" class="form-check-input " type="checkbox" value="" aria-label="Checkbox for following text input">
+    </div>
+    <input type="text" class="form-control" aria-label="Text input with checkbox">
+  </div>
+  <div class="input-group mb-3 pt-3 m-3">
+    <div class="input-group-text">
+      <span>Project Description</span><input [(ngModel)]="newProject.desc" class="form-check-input " type="checkbox" value="" aria-label="Checkbox for following text input">
+    </div>
+    <input type="text" class="form-control" aria-label="Text input with checkbox">
+  </div>
+  <div class="input-group mb-3 pt-3 m-3">
+    <div class="input-group-text">
+      <span>Image Links</span><input [(ngModel)]="newProject.imageLink" class="form-check-input " placeholder="Not Applicable" type="checkbox" value="" aria-label="Checkbox for following text input">
+    </div>
+    <input type="text" class="form-control" aria-label="Text input with checkbox">
+  </div>
+  <div class="input-group mb-3 pt-3 m-3">
+    <div class="input-group-text">
+      <span>SrcLink</span><input [(ngModel)]="newProject.srcLink" class="form-check-input " type="checkbox" value="" aria-label="Checkbox for following text input">
+    </div>
+    <input type="text" class="form-control" aria-label="Text input with checkbox">
+  </div>
+  <div class="input-group mb-3 pt-3 m-3">
+    <div class="input-group-text">
+      <span>GithubLink</span><input [(ngModel)]="newProject.GithubLink" class="form-check-input " type="checkbox" value="" aria-label="Checkbox for following text input">
+    </div>
+    <input type="text" class="form-control" aria-label="Text input with checkbox">
+  </div>
+  
+  <div class="input-group mb-3 pt-3 m-3">
+    <div class="input-group-text">
+      <span>LiveLink</span><input [(ngModel)]="newProject.liveLink" class="form-check-input " type="checkbox" value="" aria-label="Checkbox for following text input">
+    </div>
+    <input type="text" class="form-control" aria-label="Text input with checkbox">
+</div>
+<button class="m-3 p-3" (click)="onNewProject()">Submit</button>
+  

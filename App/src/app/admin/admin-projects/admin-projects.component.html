@@ -1,0 +1,20 @@
+<!-- projects.component.html -->
+<h1>INisde Admin</h1>
+<div class="container">
+    <div class="row">
+      <div class="col-md-4 pt-5" *ngFor="let project of projects">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ project.projectName }}</h5>
+            <p class="card-text">{{ project.projectDescription }}</p>
+            <div class="card-links">
+              <a href="{{ project.githubLink }}" target="_blank" class="btn btn-primary">GitHub</a>
+              <a href="{{ project.websiteLink }}" target="_blank" class="btn btn-secondary">Website</a>
+              <button (click)="onView(project._id)" class="btn btn-success">View</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
