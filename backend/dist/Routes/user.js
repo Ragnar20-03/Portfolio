@@ -15,8 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.json({
-        msg: " connected.."
-    });
+    console.log("inside user");
+    res.status(200).send(" connected..");
+    console.log("sent");
+}));
+router.post('/register', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 }));
 exports.default = router;

@@ -1,10 +1,8 @@
 import express from "express"
 const router = express.Router() ; 
 
-router.get('/' , async (req , res) => {
-    res.json({
-        msg : " connected.."
-    })
+router.post('/login' , async (req , res) => {
+    console.log("inside user");
 })  
 
 router.post('/register' , async (req ,res ) => {
