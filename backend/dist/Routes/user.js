@@ -13,12 +13,53 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const user_1 = __importDefault(require("../model/user"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const config_1 = require("../config/config");
 const router = express_1.default.Router();
-router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("inside user");
-    res.status(200).send(" connected..");
-    console.log("sent");
+const UserMiddleware_1 = __importDefault(require("../Middleware/UserMiddleware"));
+router.post('/login', UserMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // Implement your login logic here
+    const email = req.body.email;
+    const password = req.body.password;
+    try {
+        const isExist = yield user_1.default.findOne({ email });
+        console.log("isExist is : ", isExist);
+        if (!isExist) {
+            return res.status(400).json({
+                msg: " Account Not Found !"
+            });
+        }
+        else {
+            if (isExist.password == password) {
+                let token = jsonwebtoken_1.default.sign({ uid: isExist._id }, config_1.JWT_SECRETE, {
+                    expiresIn: "1d"
+                });
+                return res.status(200).json({
+                    msg: "Login Successful",
+                    token
+                });
+            }
+        }
+    }
+    catch (error) {
+        console.log("Something Went Wrong ! ", error);
+    }
 }));
 router.post('/register', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { fname, lname, ph, email, address, gitLink, linkdein, threads } = req.body;
+    try {
+        // Check if the user already exists by email
+        const existingUser = yield user_1.default.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ msg: "User already registered" });
+        }
+        // Create a new user
+        const newUser = yield user_1.default.create({ fname, lname, ph, email, address, gitLink, linkdein, threads });
+        return res.status(201).json({ msg: "Registered successfully!" });
+    }
+    catch (error) {
+        return res.status(500).json({ msg: "Something went wrong!" });
+    }
 }));
 exports.default = router;
