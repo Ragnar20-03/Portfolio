@@ -24,7 +24,8 @@ const userMiddleware = (req, res, next) => {
             msg: " UAuthorized Request !"
         });
     }
+    console.log("decoded TOken is : ", decodedToken);
     req.uid = decodedToken.uid;
-    console.log("req . uid is ", req.uid);
+    next();
 };
 exports.default = userMiddleware;
