@@ -12,8 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userRegisterController = exports.userLoginController = void 0;
-const user_1 = __importDefault(require("../model/user"));
+exports.userProjectGetController = exports.userProjectUploadController = exports.userRegisterController = exports.userLoginController = void 0;
+const schema_1 = require("../model/schema");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = require("../config/config");
 const userLoginController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -21,8 +21,7 @@ const userLoginController = (req, res) => __awaiter(void 0, void 0, void 0, func
     const email = req.body.email;
     const password = req.body.password;
     try {
-        const isExist = yield user_1.default.findOne({ email });
-        console.log("isExist is : ", isExist);
+        const isExist = yield schema_1.UserModel.findOne({ email });
         if (!isExist) {
             return res.status(400).json({
                 msg: " Account Not Found !"
@@ -49,12 +48,12 @@ const userRegisterController = (req, res) => __awaiter(void 0, void 0, void 0, f
     const { fname, lname, ph, email, address, gitLink, linkdein, threads, password } = req.body;
     try {
         // Check if the user already exists by email
-        const existingUser = yield user_1.default.findOne({ email });
+        const existingUser = yield schema_1.UserModel.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ msg: "User already registered" });
         }
         // Create a new user
-        const newUser = yield user_1.default.create({ fname, lname, ph, email, address, gitLink, linkdein, threads, password });
+        const newUser = yield schema_1.UserModel.create({ fname, lname, ph, email, address, gitLink, linkdein, threads, password });
         return res.status(201).json({ msg: "Registered successfully!", newUser });
     }
     catch (error) {
@@ -63,3 +62,41 @@ const userRegisterController = (req, res) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.userRegisterController = userRegisterController;
+const userProjectUploadController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { title, description, timeline, gitLink, liveLink, technologies, tools } = req.body;
+    try {
+        let userId = req.uid;
+        schema_1.ProjectModel.create({ title, description, timeline, gitLink, liveLink, technologies, tools }).then((response) => {
+            res.status(200).json({
+                status: "success",
+                msg: "Project Added Successfully !"
+            });
+        }).catch((error) => {
+            res.status(501).json({
+                status: "failed",
+                msg: "Unabke to Add Project !"
+            });
+        });
+    }
+    catch (error) {
+        res.status(501).json({
+            status: "failed",
+            msg: "Something went wrong !"
+        });
+    }
+});
+exports.userProjectUploadController = userProjectUploadController;
+const userProjectGetController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    schema_1.ProjectModel.find({}).then((response) => {
+        res.status(200).json({
+            status: "success",
+            projects: response
+        });
+    }).catch((error) => {
+        res.status(501).json({
+            status: "failed",
+            msg: "Something went wrong !"
+        });
+    });
+});
+exports.userProjectGetController = userProjectGetController;

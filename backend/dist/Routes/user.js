@@ -9,4 +9,6 @@ const userController_1 = require("../controller/userController");
 const UserMiddleware_1 = __importDefault(require("../Middleware/UserMiddleware"));
 router.post('/login', userController_1.userLoginController);
 router.post('/register', UserMiddleware_1.default, userController_1.userRegisterController);
+router.post('/project', UserMiddleware_1.default, userController_1.userProjectUploadController);
+router.get('/project', UserMiddleware_1.default, userController_1.userProjectGetController);
 exports.default = router;
