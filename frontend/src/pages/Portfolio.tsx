@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { FaGithub, FaLinkedin, FaEnvelope, FaBars, FaTimes, FaFileAlt, FaTimes as FaClose } from 'react-icons/fa'
+import Button from '../components/Button';
 // import img from 'next/img'
 
 type Project = {
@@ -119,7 +120,7 @@ const Portfolio: React.FC = () => {
           <div className="flex justify-between h-16">
             <div className="flex-shrink-0 flex items-center">
               <img
-                src="/placeholder.svg?height=40&width=40"
+                src="./1.svg?height=40&width=40"
                 alt="John Doe"
                 width={40}
                 height={40}
@@ -225,12 +226,13 @@ const Portfolio: React.FC = () => {
                         ))}
                       </div>
                     </div>
-                    <button
-                      onClick={() => openProjectModal(project)}
-                      className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300"
+                    <div className='  md:grid-cols-1  sm:grid-cols-1 sm : col-span-1 '>
+                    <Button 
+                      onClickHandler={() => openProjectModal(project)}
                     >
                       Read More
-                    </button>
+                    </Button>
+                    </div>
                   </div>
                 </div>
               ))}
