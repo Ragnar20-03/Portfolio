@@ -1,31 +1,17 @@
 import express from "express"
-// import { createClient } from "redis";
-import { WebSocketServer } from "ws";
+import cors from "cors"
+import { PORT } from "./config"
+import { User } from "./db/conn";
+import { router as userRouter } from "./routes/user"
 
-const app = express () ; 
-app.use(express.json() ) ; 
+const app = express();
+app.use(express.json())
+app.use(cors())
 
-// const redisClient = createClient() ; 
+app.use('/user', userRouter)
 
 
-const httpServer = app.listen(5100 , () => {
-console.log("server startde on port number 5100 ");
+app.listen(5100, () => {
+    console.log("server started on port number ", PORT);
+
 })
-
-const  wss =  new WebSocketServer({server : httpServer})
-     
-
-wss.on('connection' , (socket) => {
-    socket.on('error' , (err) => {
-        console.log("something went Wrong with socket " , socket);
-        
-    })
-
-    socket.on('message' , (data) => {
-        console.log("data Recived from socket  is : "  , data);
-        
-    })
-
-    socket.send("You are connected Succesfully !")
-})
-

@@ -58,11 +58,11 @@ interface ProjectModalProps {
 const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, darkMode }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className={`${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'} rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto`}>
+      <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto transition-all duration-300 ease-in-out transform hover:scale-[1.02]`}>
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-2xl font-bold">{project.title}</h3>
-            <button onClick={onClose} className={`${darkMode ? 'text-gray-300 hover:text-gray-100' : 'text-gray-500 hover:text-gray-700'}`}>
+            <button onClick={onClose} className={`${darkMode ? 'text-gray-300 hover:text-white' : 'text-gray-500 hover:text-gray-700'} transition-colors duration-300`}>
               <FaClose className="h-6 w-6" />
               <span className="sr-only">Close</span>
             </button>
@@ -72,7 +72,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, darkMode 
             <h4 className={`font-semibold text-lg ${darkMode ? 'text-gray-200' : 'text-gray-800'} mb-2`}>Technologies used:</h4>
             <div className="flex flex-wrap gap-2">
               {project.technologies.map((tech, index) => (
-                <span key={index} className={`${darkMode ? 'bg-gray-700 text-gray-200' : 'bg-gray-200 text-gray-700'} px-2 py-1 rounded text-sm`}>
+                <span key={index} className={`${darkMode ? 'bg-gray-800 text-gray-200' : 'bg-gray-200 text-gray-700'} px-2 py-1 rounded text-sm transition-colors duration-300`}>
                   {tech}
                 </span>
               ))}
@@ -86,7 +86,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, darkMode 
                 alt={`${project.title} screenshot ${index + 1}`}
                 width={400}
                 height={300}
-                className="rounded-lg"
+                className="rounded-lg transition-transform duration-300 hover:scale-105"
               />
             ))}
           </div>
@@ -132,9 +132,9 @@ const Portfolio: React.FC = () => {
   }
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`}>
+    <div className={`min-h-screen ${darkMode ? 'bg-black text-white' : 'bg-gray-100 text-gray-900'} transition-colors duration-300`}>
       {/* Navbar */}
-      <nav className={`${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg sticky top-0 z-40`}>
+      <nav className={`${darkMode ? 'bg-gray-900' : 'bg-white'} shadow-lg sticky top-0 z-40 transition-colors duration-300`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex-shrink-0 flex items-center">
@@ -143,39 +143,39 @@ const Portfolio: React.FC = () => {
                 alt=""
                 width={40}
                 height={40}
-                className="rounded-full mr-2"
+                className="rounded-full mr-2 transition-transform duration-300 hover:scale-110"
               />
-              <span className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}> Roshan Patil</span>
+              <span className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'} transition-colors duration-300`}> Roshan Patil</span>
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
               {['About', 'Skills', 'Projects', 'Resume', 'Contact'].map((item) => (
                 <button
                   key={item}
                   onClick={() => scrollToSection(item.toLowerCase())}
-                  className={`${darkMode ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'} px-3 py-2 rounded-md text-sm font-medium`}
+                  className={`${darkMode ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'} px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300`}
                 >
                   {item}
                 </button>
               ))}
               <button
                 onClick={toggleDarkMode}
-                className={`${darkMode ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'} px-3 py-2 rounded-md text-sm font-medium`}
+                className={`${darkMode ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'} px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300`}
                 aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
               >
-                {darkMode ? <FaSun /> : <FaMoon />}
+                {darkMode ? <FaSun className="transition-transform duration-300 hover:rotate-180" /> : <FaMoon className="transition-transform duration-300 hover:rotate-180" />}
               </button>
             </div>
             <div className="flex items-center sm:hidden">
               <button
                 onClick={toggleDarkMode}
-                className={`mr-2 ${darkMode ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'} p-2 rounded-md`}
+                className={`mr-2 ${darkMode ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'} p-2 rounded-md transition-colors duration-300`}
                 aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
               >
-                {darkMode ? <FaSun /> : <FaMoon />}
+                {darkMode ? <FaSun className="transition-transform duration-300 hover:rotate-180" /> : <FaMoon className="transition-transform duration-300 hover:rotate-180" />}
               </button>
               <button
                 onClick={toggleMenu}
-                className={`inline-flex items-center justify-center p-2 rounded-md ${darkMode ? 'text-gray-400 hover:text-white hover:bg-gray-700' : 'text-gray-400 hover:text-gray-500 hover:bg-gray-100'} focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500`}
+                className={`inline-flex items-center justify-center p-2 rounded-md ${darkMode ? 'text-gray-400 hover:text-white hover:bg-gray-800' : 'text-gray-400 hover:text-gray-500 hover:bg-gray-100'} focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 transition-colors duration-300`}
               >
                 <span className="sr-only">Open main menu</span>
                 {isMenuOpen ? <FaTimes className="block h-6 w-6" /> : <FaBars className="block h-6 w-6" />}
@@ -190,7 +190,7 @@ const Portfolio: React.FC = () => {
               <button
                 key={item}
                 onClick={() => scrollToSection(item.toLowerCase())}
-                className={`${darkMode ? 'text-gray-300 hover:text-white hover:bg-gray-700' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'} block px-3 py-2 rounded-md text-base font-medium w-full text-left`}
+                className={`${darkMode ? 'text-gray-300 hover:text-white hover:bg-gray-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'} block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors duration-300`}
               >
                 {item}
               </button>
@@ -208,20 +208,20 @@ const Portfolio: React.FC = () => {
               alt="Roshan Patil"
               width={150}
               height={150}
-              className="rounded-full mx-auto mb-4"
+              className="rounded-full mx-auto mb-4 transition-transform duration-300 hover:scale-110"
             />
-            <h1 className={`text-4xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} sm:text-5xl md:text-6xl`}>
+            <h1 className={`text-4xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} sm:text-5xl md:text-6xl transition-colors duration-300`}>
               Roshan Patil
             </h1>
-            <p className={`mt-3 text-xl ${darkMode ? 'text-gray-300' : 'text-gray-500'} sm:mt-5 sm:text-2xl`}>
+            <p className={`mt-3 text-xl ${darkMode ? 'text-gray-300' : 'text-gray-500'} sm:mt-5 sm:text-2xl transition-colors duration-300`}>
               Full Stack Developer
             </p>
           </header>
 
           {/* About Me */}
           <section id="about" className="mb-12">
-            <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mb-4`}>About Me</h2>
-            <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>
+            <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mb-4 transition-colors duration-300`}>About Me</h2>
+            <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} transition-colors duration-300`}>
               I'm a passionate full stack developer with experience in building web applications
               using modern technologies. I love solving complex problems and creating intuitive
               user experiences.
@@ -230,10 +230,10 @@ const Portfolio: React.FC = () => {
 
           {/* Skills */}
           <section id="skills" className="mb-12">
-            <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mb-4`}>Skills</h2>
+            <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mb-4 transition-colors duration-300`}>Skills</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {skills.map((skill) => (
-                <div key={skill} className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow p-4 text-center`}>
+                <div key={skill} className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow p-4 text-center transition-all duration-300 hover:shadow-lg hover:scale-105`}>
                   {skill}
                 </div>
               ))}
@@ -242,18 +242,18 @@ const Portfolio: React.FC = () => {
 
           {/* Projects */}
           <section id="projects" className="mb-12">
-            <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mb-4`}>Projects</h2>
+            <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mb-4 transition-colors duration-300`}>Projects</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {projects.map((project, index) => (
-                <div key={index} className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow overflow-hidden`}>
+                <div key={index} className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105`}>
                   <div className="p-6">
-                    <h3 className={`font-bold text-xl mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>{project.title}</h3>
-                    <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} mb-4`}>{project.description}</p>
+                    <h3 className={`font-bold text-xl mb-2 ${darkMode ? 'text-white' : 'text-gray-900'} transition-colors duration-300`}>{project.title}</h3>
+                    <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} mb-4 transition-colors duration-300`}>{project.description}</p>
                     <div className="mb-4">
-                      <h4 className={`font-semibold text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'} mb-2`}>Technologies used:</h4>
+                      <h4 className={`font-semibold text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'} mb-2 transition-colors duration-300`}>Technologies used:</h4>
                       <div className="flex flex-wrap gap-2">
                         {project.technologies.map((tech, techIndex) => (
-                          <span key={techIndex} className={`${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'} px-2 py-1 rounded text-sm`}>
+                          <span key={techIndex} className={`${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'} px-2 py-1 rounded text-sm transition-colors duration-300`}>
                             {tech}
                           </span>
                         ))}
@@ -262,7 +262,7 @@ const Portfolio: React.FC = () => {
                     <div className="flex flex-col sm:flex-row gap-2">
                       <button 
                         onClick={() => openProjectModal(project)}
-                        className={`w-full sm:w-auto ${darkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} text-white font-bold py-2 px-4 rounded transition duration-300`}
+                        className={`w-full sm:w-auto ${darkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} text-white font-bold py-2 px-4 rounded transition-all duration-300 hover:shadow-lg`}
                       >
                         Read More
                       </button>
@@ -270,7 +270,7 @@ const Portfolio: React.FC = () => {
                         href={project.githubLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`w-full sm:w-auto ${darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'} text-center font-bold py-2 px-4 rounded transition duration-300 flex items-center justify-center`}
+                        className={`w-full sm:w-auto ${darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'} text-center font-bold py-2 px-4 rounded transition-all duration-300 hover:shadow-lg flex items-center justify-center`}
                       >
                         <FaGithub className="mr-2" />
                         GitHub
@@ -284,15 +284,15 @@ const Portfolio: React.FC = () => {
 
           {/* Resume */}
           <section id="resume" className="mb-12">
-            <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mb-4`}>Resume</h2>
-            <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow p-6`}>
-              <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} mb-4`}>
+            <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mb-4 transition-colors duration-300`}>Resume</h2>
+            <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow p-6 transition-all duration-300 hover:shadow-lg`}>
+              <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} mb-4 transition-colors duration-300`}>
                 Download my resume to learn more about my work experience, education, and skills.
               </p>
               <a
                 href="/path-to-your-resume.pdf"
                 download
-                className={`inline-flex items-center ${darkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} text-white font-bold py-2 px-4 rounded transition duration-300`}
+                className={`inline-flex items-center ${darkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} text-white font-bold py-2 px-4 rounded transition-all duration-300 hover:shadow-lg`}
               >
                 <FaFileAlt className="mr-2" />
                 Download Resume
@@ -302,19 +302,19 @@ const Portfolio: React.FC = () => {
 
           {/* Contact */}
           <section id="contact">
-            <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mb-4`}>Contact</h2>
+            <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mb-4 transition-colors duration-300`}>Contact</h2>
             <div className="flex justify-center space-x-4">
-              <a href="https://github.com" className={`${darkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-400 hover:text-gray-500'}`}>
+              <a href="https://github.com" className={`${darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-gray-600'} transition-colors duration-300`}>
                 <span className="sr-only">GitHub</span>
-                <FaGithub className="h-6 w-6" />
+                <FaGithub className="h-6 w-6 transition-transform duration-300 hover:scale-110" />
               </a>
-              <a href="https://linkedin.com" className={`${darkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-400 hover:text-gray-500'}`}>
+              <a href="https://linkedin.com" className={`${darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-gray-600'} transition-colors duration-300`}>
                 <span className="sr-only">LinkedIn</span>
-                <FaLinkedin className="h-6 w-6" />
+                <FaLinkedin className="h-6 w-6 transition-transform duration-300 hover:scale-110" />
               </a>
-              <a href="mailto:johndoe@example.com" className={`${darkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-400 hover:text-gray-500'}`}>
+              <a href="mailto:johndoe@example.com" className={`${darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-gray-600'} transition-colors duration-300`}>
                 <span className="sr-only">Email</span>
-                <FaEnvelope className="h-6 w-6" />
+                <FaEnvelope className="h-6 w-6 transition-transform duration-300 hover:scale-110" />
               </a>
             </div>
           </section>
