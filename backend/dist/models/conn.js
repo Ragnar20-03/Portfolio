@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.User = exports.Project = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const config_1 = require("../config");
 mongoose_1.default.connect(config_1.DB_URL).then((res) => {
@@ -11,8 +11,45 @@ mongoose_1.default.connect(config_1.DB_URL).then((res) => {
 }).catch((err) => {
     console.log("connection to mongodb is failed !", err);
 });
+const projectSchema = new mongoose_1.default.Schema({
+    title: {
+        type: String,
+        required: [true, "Project title is required"]
+    },
+    description: {
+        type: String,
+        required: [true, "Project description is required"]
+    },
+    github: {
+        type: String,
+        required: [false, "Project description is required"]
+    },
+    url: {
+        type: String,
+        default: null
+    },
+    startDate: {
+        type: Date,
+        required: [true, "Project start date is required"]
+    },
+    endDate: {
+        type: Date,
+        default: null
+    },
+    technologies: {
+        type: [String],
+        default: []
+    },
+    images: {
+        type: [String],
+        default: []
+    }
+});
 // Define the User schema
 const userSchema = new mongoose_1.default.Schema({
+    projects: {
+        type: [projectSchema], default: []
+    },
     email: {
         type: String,
         required: [true, "Email is required"],
@@ -59,7 +96,8 @@ const userSchema = new mongoose_1.default.Schema({
     twitter: { type: String, default: null },
     github: { type: String, default: null },
     portfolio: { type: String, default: null },
-    skills: { type: [String], default: [] }
+    skills: { type: [String], default: [] },
 });
+exports.Project = mongoose_1.default.model('Project', projectSchema);
 // Create and export the User model
 exports.User = mongoose_1.default.model('User', userSchema);
