@@ -61,4 +61,6 @@ export const validateUser = (data: any, param: string) => {
 };
 
 
-;
+const projectSchema = z.object({
+
+})

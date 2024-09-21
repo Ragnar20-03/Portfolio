@@ -18,6 +18,7 @@ exports.router = express_1.default.Router();
 const conn_1 = require("../models/conn");
 const zod_1 = require("../services/zod");
 const jwt_1 = require("../services/jwt");
+const userMiddleware_1 = require("../middleware/userMiddleware");
 const urlName_1 = require("../services/urlName");
 exports.router.post('/register', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const registerdData = req.body;
@@ -67,7 +68,7 @@ exports.router.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, fu
         else {
             console.log("res1 is : ", res1);
             if (res1.password == (validatedData === null || validatedData === void 0 ? void 0 : validatedData.password)) {
-                res.cookie('token', (0, jwt_1.createToken)({ email: res1.email }));
+                res.cookie('token', (0, jwt_1.createToken)({ email: res1.email, uid: res1.id }));
                 res.status(200).json({
                     msg: "account Login Suucesfull !"
                 });
@@ -100,16 +101,27 @@ exports.router.get('/details/:url_name', (req, res) => __awaiter(void 0, void 0,
         });
     }
 }));
-exports.router.get(`/projects/:email`, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        conn_1.User.findOne({
-            email: req.params.email
-        }).then((res1) => {
-            res.status(200).json({
-                data: res1
-            });
-        });
-    }
-    catch (error) {
-    }
+// router.get(`/projects/:url_name`, async (req, res) => {
+//     try {
+//         User.findOne({
+//         }).then((res1) => {
+//             res.status(200).json({
+//                 data: res1
+//             })
+//         })
+//     } catch (error) {
+//     }
+// })
+exports.router.get("/addProject", userMiddleware_1.userMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const projectData = {
+        title: req.body.title,
+        startDate: req.body.startDate,
+        endDate: req.body.endDate,
+        description: req.body.description,
+        url: req.body.url,
+        technologies: req.body.technologies,
+        images: req.body.images,
+        github: req.body.github
+    };
+    console.log("Project data is : ", projectData);
 }));

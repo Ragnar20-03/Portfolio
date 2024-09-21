@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userMiddleware = void 0;
+const jwt_1 = require("../services/jwt");
 const userMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let token = yield req.cookies['token'];
@@ -17,6 +18,11 @@ const userMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
             return res.status(500).json({
                 msg: "Unauthorized Request"
             });
+        }
+        let verifiedToken = (0, jwt_1.verifyToken)(token);
+        console.log("verfied token ", verifiedToken);
+        if (verifiedToken) {
+            // req.userId = verifiedToken.uid
         }
         next();
     }

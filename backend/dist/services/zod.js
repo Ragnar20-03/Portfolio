@@ -54,4 +54,4 @@ const validateUser = (data, param) => {
     }
 };
 exports.validateUser = validateUser;
-;
+const projectSchema = zod_1.z.object({});

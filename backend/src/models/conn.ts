@@ -122,7 +122,17 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
 
 });
 
+export interface Iproject {
+    title: string;
+    description: string;
+    url?: string | null;
+    startDate: Date;
+    endDate?: Date | null;
+    technologies?: string[] | null;
+    images: string[] | null
+    github: string | null
 
+}
 
 export const Project: Model<IProject> = mongoose.model<IProject>('Project', projectSchema)
 

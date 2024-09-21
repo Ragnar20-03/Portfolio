@@ -1,13 +1,11 @@
 import express, { Request, Router, Response } from "express"
 export const router = express.Router();
 
-import { User } from "../models/conn";
+import { Iproject, Project, User } from "../models/conn";
 import { validateUser } from "../services/zod"
 import { createToken, verifyToken } from "../services/jwt";
 import { userMiddleware } from "../middleware/userMiddleware";
 import { generateUrlName } from "../services/urlName";
-
-
 
 router.post('/register', async (req: Request, res: Response) => {
 
@@ -72,7 +70,7 @@ router.post('/login', async (req: Request, res: Response) => {
         else {
             console.log("res1 is : ", res1);
             if (res1.password == validatedData?.password) {
-                res.cookie('token', createToken({ email: res1.email }))
+                res.cookie('token', createToken({ email: res1.email, uid: res1.id }))
                 res.status(200).json({
 
                     msg: "account Login Suucesfull !"
@@ -109,10 +107,10 @@ router.get('/details/:url_name', async (req, res) => {
     }
 })
 
-router.get(`/projects/:email`, async (req, res) => {
+router.get(`/projects/:url_name`, async (req, res) => {
     try {
         User.findOne({
-            email: req.params.email
+
         }).then((res1) => {
             res.status(200).json({
                 data: res1
@@ -121,4 +119,28 @@ router.get(`/projects/:email`, async (req, res) => {
     } catch (error) {
 
     }
+})
+
+router.get("/addProject", userMiddleware, async (req, res) => {
+    const projectData: Iproject = {
+        title: req.body.title,
+        startDate: req.body.startDate,
+        endDate: req.body.endDate,
+        description: req.body.description,
+        url: req.body.url,
+        technologies: req.body.technologies,
+        images: req.body.images,
+        github: req.body.github
+    }
+    console.log("Project data is : ", projectData);
+
+    User.findOne({
+        id: req.userID
+    }).then((res1) => {
+        if (!res1) {
+
+        }
+    })
+
+
 })
