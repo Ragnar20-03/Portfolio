@@ -18,7 +18,7 @@ const projects: Project[] = [
     description: 'A full-stack e-commerce solution with user authentication, product management, and payment integration.',
     technologies: ['React', 'Node.js', 'Express', 'MongoDB', 'Stripe'],
     detailedDescription: 'This e-commerce platform provides a comprehensive solution for online businesses. It features user authentication, product catalog management, shopping cart functionality, and secure payment processing using Stripe. The frontend is built with React for a responsive and interactive user interface, while the backend uses Node.js and Express to handle API requests and business logic. MongoDB is used as the database to store product information, user data, and order details.',
-    imgs: ['/placeholder.svg?height=300&width=400', '/placeholder.svg?height=300&width=400'],
+    imgs: ['https://res.cloudinary.com/dpisj0lfy/image/upload/v1727102078/uploads/g2ho8q1jkik2b29sfvnu.png', '/placeholder.svg?height=300&width=400'],
     githubLink: 'https://github.com/yourusername/ecommerce-platform'
   },
   {

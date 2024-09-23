@@ -8,9 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userMiddleware = void 0;
-const jwt_1 = require("../services/jwt");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const config_1 = require("../config");
 const userMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let token = yield req.cookies['token'];
@@ -19,15 +23,18 @@ const userMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
                 msg: "Unauthorized Request"
             });
         }
-        let verifiedToken = (0, jwt_1.verifyToken)(token);
-        console.log("verfied token ", verifiedToken);
+        let verifiedToken = jsonwebtoken_1.default.verify(token, config_1.JWT_SECRETE);
         if (verifiedToken) {
-            // req.userId = verifiedToken.uid
+            next(); // Call next middleware or route handler
         }
-        next();
+        else {
+            return res.status(401).json({
+                msg: "Unauthorized Request: Token invalid"
+            });
+        }
     }
     catch (error) {
-        // console.log("something went Wrong : ", error);
+        console.log("something went Wrong : ", error);
         return res.status(500).json({
             msg: "Unauthorized Request"
         });
