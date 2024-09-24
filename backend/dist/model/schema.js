@@ -96,9 +96,10 @@ const profileSchema = new mongoose_1.Schema({
     extracurricular: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Extracurricular' }] // Array of Extracurricular object IDs
 });
 const authSchema = new mongoose_1.Schema({
-    username: { type: String, required: true },
+    email: { type: String, required: true },
     password: { type: String, required: true },
-    profileId: { type: mongoose_1.Schema.Types.ObjectId, ref: "Profile", default: null }
+    profileId: { type: mongoose_1.Schema.Types.ObjectId, ref: "Profile", default: null },
+    otp: { type: String, default: null, required: false }
 });
 // Models for separate collections
 exports.Auth = (0, mongoose_1.model)("Auth", authSchema);

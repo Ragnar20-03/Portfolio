@@ -15,11 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userLoginController = exports.userRegisterController = exports.router = void 0;
 const express_1 = __importDefault(require("express"));
 const schema_1 = require("../../model/schema");
+const sendOtp_1 = require("../../services/email/sendOtp");
 exports.router = express_1.default.Router();
 const userRegisterController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
+    (0, sendOtp_1.sendOTP)(email, "1212");
     const query = yield schema_1.Auth.create({
-        username, password
+        email, password
     });
     res.json({
         query

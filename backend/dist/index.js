@@ -22,7 +22,7 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use('/api/auth', userAuth_1.authRouter);
 app.get('/otp', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, sendOtp_1.sendOTP)("ap7827681@gmail.com", "OTP Validation ", "45678", "no text");
+    yield (0, sendOtp_1.sendOTP)("ap7827681@gmail.com", "54545");
     res.json({
         msg: "mail sent successfully!"
     });

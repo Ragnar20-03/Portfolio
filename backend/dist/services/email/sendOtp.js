@@ -13,7 +13,7 @@ exports.sendOTP = void 0;
 const dotenv_1 = require("../../config/dotenv");
 const email_1 = require("../../config/email");
 // Email sending function
-const sendOTP = (to, subject, otp, text) => __awaiter(void 0, void 0, void 0, function* () {
+const sendOTP = (to, otp) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const htmlContent = `
         <!DOCTYPE html>
@@ -81,8 +81,7 @@ const sendOTP = (to, subject, otp, text) => __awaiter(void 0, void 0, void 0, fu
         const mailOptions = {
             from: dotenv_1.USER_EMAIL, // Sender's email address
             to, // Recipient email
-            subject, // Subject line
-            text, // Plain text body (fallback for email clients that don't support HTML)
+            subject: "OTP Validation", // Subject line
             html: htmlContent, // HTML body
         };
         // Send email

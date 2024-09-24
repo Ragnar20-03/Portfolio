@@ -10,7 +10,7 @@ app.use(express.json())
 app.use('/api/auth', authRouter)
 
 app.get('/otp', async (req, res) => {
-    await sendOTP("ap7827681@gmail.com", "OTP Validation ", "45678", "no text")
+    await sendOTP("ap7827681@gmail.com", "54545")
     res.json({
         msg: "mail sent successfully!"
     })

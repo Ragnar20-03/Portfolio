@@ -2,7 +2,7 @@ import { USER_EMAIL } from "../../config/dotenv";
 import { transporter } from "../../config/email";
 
 // Email sending function
-export const sendOTP = async (to: string, subject: string, otp: string, text?: string,) => {
+export const sendOTP = async (to: string, otp: string) => {
     try {
         const htmlContent = `
         <!DOCTYPE html>
@@ -71,8 +71,7 @@ export const sendOTP = async (to: string, subject: string, otp: string, text?: s
         const mailOptions = {
             from: USER_EMAIL, // Sender's email address
             to, // Recipient email
-            subject, // Subject line
-            text, // Plain text body (fallback for email clients that don't support HTML)
+            subject: "OTP Validation",  // Subject line
             html: htmlContent, // HTML body
         };
 

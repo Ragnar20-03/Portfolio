@@ -108,7 +108,6 @@ const authSchema = new Schema({
     email: { type: String, required: true },
     password: { type: String, required: true },
     profileId: { type: Schema.Types.ObjectId, ref: "Profile", default: null },
-    otp: { type: String, default: null, required: false }
 })
 
 // Models for separate collections
