@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose, { MongooseError } from "mongoose"
 import { DB_URL } from "./dotenv"
 
 export const connect_db = async () => {

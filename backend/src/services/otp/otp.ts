@@ -38,6 +38,8 @@ export class OTP {
 
     validateOtp = (email: string, otp: string) => {
         const currentTime = Date.now();
+        console.log("Otp'S Are : ", this.users_otps);
+
         const userOtp = this.users_otps.find(user => user.email === email && user.createdAt + (5 * 60 * 1000) > currentTime);
 
         if (!userOtp) {

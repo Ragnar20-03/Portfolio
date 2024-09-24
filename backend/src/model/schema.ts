@@ -2,99 +2,98 @@ import { Schema, model } from 'mongoose';
 
 // Define schemas for subdocuments (nested objects in separate collections)
 const skillSchema = new Schema({
-    category: { type: String, required: true },
-    skills: [{ type: String, required: true }]
+    category: { type: String, required: false },
+    skills: [{ type: String, required: false }]
 });
 
 const projectSchema = new Schema({
-    name: { type: String, required: true },
-    description: { type: String, required: true },
-    technologies: [{ type: String, required: true }],
-    githubLink: { type: String, required: true },
+    name: { type: String, required: false },
+    description: { type: String, required: false },
+    technologies: [{ type: String, required: false }],
+    githubLink: { type: String, required: false },
     website: { type: String },
-    images: [{ type: String, required: true }]
+    images: [{ type: String, required: false }]
 });
 
 const collegeSchema = new Schema({
-    degree: { type: String, required: true },
-    major: { type: String, required: true },
-    school: { type: String, required: true },
-    year: { type: String, required: true },
-    cgpa: { type: String, required: true },
-    courseWork: { type: String, required: true }
+    degree: { type: String, required: false },
+    major: { type: String, required: false },
+    school: { type: String, required: false },
+    year: { type: String, required: false },
+    cgpa: { type: String, required: false },
+    courseWork: { type: String, required: false }
 });
 
 const std12thSchema = new Schema({
-    degree: { type: String, required: true },
-    college: { type: String, required: true },
-    year: { type: String, required: true },
-    board: { type: String, required: true },
-    percentage: { type: String, required: true },
+    degree: { type: String, required: false },
+    college: { type: String, required: false },
+    year: { type: String, required: false },
+    board: { type: String, required: false },
+    percentage: { type: String, required: false },
     cetPercentile: { type: String },
-    courseWork: { type: String, required: true }
+    courseWork: { type: String, required: false }
 });
 
 const schoolSchema = new Schema({
-    degree: { type: String, required: true },
-    school: { type: String, required: true },
-    year: { type: String, required: true },
-    board: { type: String, required: true },
-    percentage: { type: String, required: true },
-    courseWork: { type: String, required: true }
+    degree: { type: String, required: false },
+    school: { type: String, required: false },
+    year: { type: String, required: false },
+    board: { type: String, required: false },
+    percentage: { type: String, required: false },
+    courseWork: { type: String, required: false }
 });
 
 const educationSchema = new Schema({
-    college: { type: collegeSchema, required: true },
+    college: { type: collegeSchema, required: false },
     std12th: std12thSchema,
     school: schoolSchema
 });
 
 const certificationSchema = new Schema({
-    logo: { type: String, required: true },
-    name: { type: String, required: true },
-    organization: { type: String, required: true },
+    logo: { type: String, required: false },
+    name: { type: String, required: false },
+    organization: { type: String, required: false },
     rank: { type: String },
-    year: { type: String, required: true },
-    preview: { type: String, required: true }
+    year: { type: String, required: false },
+    preview: { type: String, required: false }
 });
 
 const courseSchema = new Schema({
-    name: { type: String, required: true },
-    description: { type: String, required: true },
-    technologies: [{ type: String, required: true }],
-    tutor: { type: String, required: true },
-    platform: { type: String, required: true },
-    year: { type: String, required: true },
-    preview: { type: String, required: true }
+    name: { type: String, required: false },
+    description: { type: String, required: false },
+    technologies: [{ type: String, required: false }],
+    tutor: { type: String, required: false },
+    platform: { type: String, required: false },
+    year: { type: String, required: false },
+    preview: { type: String, required: false }
 });
 
 const competitionSchema = new Schema({
-    name: { type: String, required: true },
-    date: { type: String, required: true },
-    organization: { type: String, required: true },
-    achievement: { type: String, required: true },
-    projectSummary: { type: String, required: true },
-    repoLink: { type: String, required: true },
-    certificate: { type: String, required: true }
+    name: { type: String, required: false },
+    date: { type: String, required: false },
+    organization: { type: String, required: false },
+    achievement: { type: String, required: false },
+    projectSummary: { type: String, required: false },
+    repoLink: { type: String, required: false },
+    certificate: { type: String, required: false }
 });
 
 const extracurricularSchema = new Schema({
-    title: { type: String, required: true },
-    role: { type: String, required: true },
-    year: { type: String, required: true },
-    description: { type: String, required: true }
+    title: { type: String, required: false },
+    role: { type: String, required: false },
+    year: { type: String, required: false },
+    description: { type: String, required: false }
 });
 
 // Main Profile schema with references to other collections
 const profileSchema = new Schema({
     avatar: { type: String, default: '#' },
-    name: { type: String, required: true },
-    about: { type: String, required: true },
-    descriptors: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    github: { type: String, required: true },
-    linkedin: { type: String, required: true },
+    name: { type: String, required: false },
+    about: { type: String, required: false },
+    descriptors: { type: String, required: false },
+    email: { type: String, required: false, unique: true },
+    github: { type: String, required: false },
+    linkedin: { type: String, required: false },
     skills: [skillSchema], // Array of Skill subdocuments
     projects: [{ type: Schema.Types.ObjectId, ref: 'Project' }], // Array of Project object IDs
     education: [{ type: Schema.Types.ObjectId, ref: 'Education' }], // Array of Education object IDs
