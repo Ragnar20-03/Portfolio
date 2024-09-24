@@ -2,12 +2,12 @@ import express, { Request, Response } from "express"
 import { PORT } from "./config/dotenv";
 import { connect_db } from "./config/db";
 import { cloudinary_start } from "./config/cloudinary";
-import { router as userRouter } from "./routes/user"
+import { userRouter } from "./routes/user/user"
 import { sendOTP } from "./services/email/sendOtp";
-
+import { authRouter } from "./routes/auth/userAuth";
 const app = express();
 app.use(express.json())
-app.use('/user', userRouter)
+app.use('/api/auth', authRouter)
 
 app.get('/otp', async (req, res) => {
     await sendOTP("ap7827681@gmail.com", "OTP Validation ", "45678", "no text")

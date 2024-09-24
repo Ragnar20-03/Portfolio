@@ -16,11 +16,11 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = require("./config/dotenv");
 const db_1 = require("./config/db");
 const cloudinary_1 = require("./config/cloudinary");
-const user_1 = require("./routes/user");
 const sendOtp_1 = require("./services/email/sendOtp");
+const userAuth_1 = require("./routes/auth/userAuth");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
-app.use('/user', user_1.router);
+app.use('/api/auth', userAuth_1.authRouter);
 app.get('/otp', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, sendOtp_1.sendOTP)("ap7827681@gmail.com", "OTP Validation ", "45678", "no text");
     res.json({
