@@ -2,7 +2,7 @@ import express, { Request, Response } from "express"
 import { PORT } from "./config/dotenv";
 import { connect_db } from "./config/db";
 import { cloudinary_start } from "./config/cloudinary";
-import { userRouter } from "./routes/user/user"
+import { OTP } from "./services/otp/otp"
 import { sendOTP } from "./services/email/sendOtp";
 import { authRouter } from "./routes/auth/userAuth";
 const app = express();
@@ -28,6 +28,7 @@ app.post('/verify-otp', async (req: Request, res: Response) => {
     })
 })
 app.listen(PORT, async () => {
+    let instance = OTP.getInstance();
     await connect_db();
     await cloudinary_start();
     console.log(`Server Started on port number ${PORT}`);

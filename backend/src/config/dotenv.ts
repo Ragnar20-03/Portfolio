@@ -8,3 +8,4 @@ export const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY
 export const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET
 export const USER_EMAIL = process.env.USER_EMAIL  // Your email address from .env
 export const USER_PASS = process.env.USER_PASS // Your email password or app password from .env
+export const BCRYPT_SALT = process.env.BCRYPT_SALT || 10

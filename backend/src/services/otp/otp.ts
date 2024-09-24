@@ -6,7 +6,7 @@ interface IUsersOTP {
     createdAt: number;
 }
 
-class OTP {
+export class OTP {
     users_otps: IUsersOTP[] = [];
     private static instance: OTP | null = null
     constructor() {

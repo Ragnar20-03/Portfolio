@@ -16,6 +16,7 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = require("./config/dotenv");
 const db_1 = require("./config/db");
 const cloudinary_1 = require("./config/cloudinary");
+const otp_1 = require("./services/otp/otp");
 const sendOtp_1 = require("./services/email/sendOtp");
 const userAuth_1 = require("./routes/auth/userAuth");
 const app = (0, express_1.default)();
@@ -38,6 +39,7 @@ app.post('/verify-otp', (req, res) => __awaiter(void 0, void 0, void 0, function
     });
 }));
 app.listen(dotenv_1.PORT, () => __awaiter(void 0, void 0, void 0, function* () {
+    let instance = otp_1.OTP.getInstance();
     yield (0, db_1.connect_db)();
     yield (0, cloudinary_1.cloudinary_start)();
     console.log(`Server Started on port number ${dotenv_1.PORT}`);

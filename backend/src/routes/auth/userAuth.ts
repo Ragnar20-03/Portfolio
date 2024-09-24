@@ -1,6 +1,7 @@
 import express from "express"
-import { userAssignRegisterController } from "../../controller/auth/userAuthController";
+import { userGetOtpController, userVerifyOtp_RegisterController } from "../../controller/auth/userAuthController";
 
 export const authRouter = express.Router();
 
-authRouter.post('/register', userAssignRegisterController)
+authRouter.post('/get-otp', userGetOtpController)
+authRouter.post('/verify-otp', userVerifyOtp_RegisterController)
