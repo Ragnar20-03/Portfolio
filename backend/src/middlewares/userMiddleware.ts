@@ -1,9 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 import { JWT_SECRET } from "../config/dotenv";
-import cookieParser from "cookie-parser";
-import mongoose from "mongoose";
-import { Auth } from "../model/schema";
+
 
 interface JwtPayload {
     authId: string;

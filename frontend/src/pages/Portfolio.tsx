@@ -99,7 +99,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, darkMode 
 const Portfolio: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
-  const [darkMode, setDarkMode] = useState<boolean>(false)
+  const [darkMode, setDarkMode] = useState<boolean>(true)
 
   useEffect(() => {
     if (darkMode) {
