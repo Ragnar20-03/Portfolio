@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createToken = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = require("../config/dotenv");
-const createToken = (authId) => {
-    let token = jsonwebtoken_1.default.sign({ authId: authId }, dotenv_1.JWT_SECRET);
+const createToken = (authId, profileId) => {
+    let token = jsonwebtoken_1.default.sign({ authId: authId, profileId: profileId }, dotenv_1.JWT_SECRET);
     return token;
 };
 exports.createToken = createToken;

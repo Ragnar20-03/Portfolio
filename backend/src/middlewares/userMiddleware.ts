@@ -1,29 +1,50 @@
 import { NextFunction, Request, Response } from "express";
-import jwt, { JwtPayload } from "jsonwebtoken"
+import jwt, { TokenExpiredError } from "jsonwebtoken";
 import { JWT_SECRET } from "../config/dotenv";
-import { Certificate } from "crypto";
+import cookieParser from "cookie-parser";
+import mongoose from "mongoose";
+import { Auth } from "../model/schema";
 
-export interface extendRequest extends Request {
-    authId?: any,
-    profileId?: any
+interface JwtPayload {
+    authId: string;
+    profileId: string;
+    iat: number; // or whatever other properties you have
 }
 
-export const M_userMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+export const M_userTokenMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        let token = req.cookies['token'];
-        let verifiedToken = <JwtPayload>jwt.verify(token, JWT_SECRET);
+        // Check for cookie presence and value
+
+        let token = req.cookies['token']
+        if (!token) {
+            return res.status(401).json({ msg: "UnAuthorized Request !" });
+        }
+
+        // Proceed with verification only if the cookie is present and has a value
+        let verifiedToken = jwt.verify(token, JWT_SECRET) as JwtPayload;
+
+
         if (verifiedToken) {
-            req.authId = verifiedToken.authId
-            req.profileId = verifiedToken.profileId;
-            next();
+            if (verifiedToken.authId && verifiedToken.profileId) {
+                req.authId = verifiedToken.authId;
+                req.profileId = verifiedToken.profileId;
+                next();
+            } else {
+                return res.status(401).json({ msg: "UnAuthorized Request !" });
+
+            }
         } else {
             return res.status(401).json({ msg: "UnAuthorized Request !" });
         }
     } catch (error) {
         console.log("error is : ", error);
-        return res.status(500).json({
-            msg: "Unauthorized Request !"
-        })
-
+        if (error instanceof TokenExpiredError) {
+            // Handle token expiration (e.g., refresh token)
+            return res.status(401).json({ msg: "Your authorization token has expired. Please log in again." });
+        } else {
+            return res.status(500).json({
+                msg: "Unauthorized Request !"
+            });
+        }
     }
-}
+};

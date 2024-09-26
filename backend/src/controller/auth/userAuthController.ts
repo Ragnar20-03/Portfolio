@@ -4,8 +4,9 @@ import { OTP } from "../../services/otp/otp"
 import bcrypt from "bcrypt"
 import { Auth, Profile } from "../../model/schema";
 import { createToken } from "../../services/jwt";
+import { JWT_SECRET } from "../../config/dotenv";
 
-
+import jwt from "jsonwebtoken"
 let bcrypt_salt = 10;
 
 export const router = express.Router();
@@ -83,10 +84,13 @@ export const userVerifyOtp_RegisterController = async (req: Request, res: Respon
             newUser.profileId = createdProfile._id; // Set profileId to the new profile's ID
             await newUser.save(); // Save the updated Auth document
             let token = createToken(newUser._id.toString(), newUser.profileId.toString())
+            res.cookie('token', token, { httpOnly: true, secure: true }); // Set cookie in the response
+
+
             return res.status(200).json({
                 otp_msg: "success",
                 msg: "Registration Successful!",
-                token
+
             });
         }
         return res.status(401).json({
@@ -114,8 +118,15 @@ export const userLoginController = async (req: Request, res: Response) => {
             let isPasswordValid = await bcrypt.compare(req.body.password, query.password)
 
             if (isPasswordValid) {
+
+                let token = createToken(query._id.toString(), query.profileId.toString())
+                console.log("login token is : ", jwt.verify(token, JWT_SECRET));
+
+                // Example of setting a cookie
+                res.cookie('token', token, { httpOnly: true, secure: true }); // Set cookie in the response
+
                 return res.status(200).json({
-                    msg: "Login Successful ! "
+                    msg: "Login Successful ! ",
                 })
             }
             return res.status(401).json({

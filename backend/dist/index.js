@@ -20,8 +20,11 @@ const otp_1 = require("./services/otp/otp");
 const sendOtp_1 = require("./services/email/sendOtp");
 const userAuth_1 = require("./routes/auth/userAuth");
 const user_1 = require("./routes/user/user");
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
+app.use(express_1.default.urlencoded({ extended: true }));
+app.use((0, cookie_parser_1.default)()); // Use cookie-parser here
 app.use('/api/auth', userAuth_1.authRouter);
 app.use('/api/user', user_1.router);
 app.get('/otp', (req, res) => __awaiter(void 0, void 0, void 0, function* () {

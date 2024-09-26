@@ -19,6 +19,8 @@ const otp_1 = require("../../services/otp/otp");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const schema_1 = require("../../model/schema");
 const jwt_1 = require("../../services/jwt");
+const dotenv_1 = require("../../config/dotenv");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 let bcrypt_salt = 10;
 exports.router = express_1.default.Router();
 let otpInstance = otp_1.OTP.getInstance();
@@ -86,11 +88,11 @@ const userVerifyOtp_RegisterController = (req, res) => __awaiter(void 0, void 0,
             // Update the Auth document with the profile ID
             newUser.profileId = createdProfile._id; // Set profileId to the new profile's ID
             yield newUser.save(); // Save the updated Auth document
-            let token = (0, jwt_1.createToken)(newUser._id.toString());
+            let token = (0, jwt_1.createToken)(newUser._id.toString(), newUser.profileId.toString());
+            res.cookie('token', token, { httpOnly: true, secure: true }); // Set cookie in the response
             return res.status(200).json({
                 otp_msg: "success",
                 msg: "Registration Successful!",
-                token
             });
         }
         return res.status(401).json({
@@ -116,8 +118,12 @@ const userLoginController = (req, res) => __awaiter(void 0, void 0, void 0, func
         if (query) {
             let isPasswordValid = yield bcrypt_1.default.compare(req.body.password, query.password);
             if (isPasswordValid) {
+                let token = (0, jwt_1.createToken)(query._id.toString(), query.profileId.toString());
+                console.log("login token is : ", jsonwebtoken_1.default.verify(token, dotenv_1.JWT_SECRET));
+                // Example of setting a cookie
+                res.cookie('token', token, { httpOnly: true, secure: true }); // Set cookie in the response
                 return res.status(200).json({
-                    msg: "Login Successful ! "
+                    msg: "Login Successful ! ",
                 });
             }
             return res.status(401).json({

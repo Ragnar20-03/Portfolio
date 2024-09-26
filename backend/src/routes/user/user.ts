@@ -1,8 +1,9 @@
 import express from "express";
 
-import { userGetDetailsController } from "../../controller/user/userProfileController";
+import { userGetProfileDetailsController, userUpdateProfileController } from "../../controller/user/userProfileController";
+import { M_userTokenMiddleware } from "../../middlewares/userMiddleware";
 
 export const router = express.Router();
 
-router.get('/details/:profileId', userGetDetailsController)
-router.post('/updateProfile',)
+router.get('/details/:profileId', userGetProfileDetailsController)
+router.put('/updateProfile', M_userTokenMiddleware, userUpdateProfileController)
