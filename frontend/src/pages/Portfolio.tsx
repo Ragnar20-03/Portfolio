@@ -204,7 +204,7 @@ const Portfolio: React.FC = () => {
           {/* Header */}
           <header className="text-center mb-12">
             <img
-              src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fpixabay.com%2Fvectors%2Fblank-profile-picture-mystery-man-973460%2F&psig=AOvVaw11Mm2-012shxL-9dcGEi4r&ust=1727458667624000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCKCp6pOT4YgDFQAAAAAdAAAAABAE"
+              src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
               alt="Roshan Patil"
               width={150}
               height={150}
