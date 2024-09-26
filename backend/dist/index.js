@@ -19,9 +19,11 @@ const cloudinary_1 = require("./config/cloudinary");
 const otp_1 = require("./services/otp/otp");
 const sendOtp_1 = require("./services/email/sendOtp");
 const userAuth_1 = require("./routes/auth/userAuth");
+const user_1 = require("./routes/user/user");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use('/api/auth', userAuth_1.authRouter);
+app.use('/api/user', user_1.router);
 app.get('/otp', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, sendOtp_1.sendOTP)("ap7827681@gmail.com", "54545");
     res.json({

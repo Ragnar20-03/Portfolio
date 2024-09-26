@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userGetDetailsController = void 0;
+exports.userUpdateProfileController = exports.userGetDetailsController = void 0;
 const schema_1 = require("../../model/schema");
 const mongoose_1 = __importDefault(require("mongoose"));
 const userGetDetailsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -48,3 +48,6 @@ const userGetDetailsController = (req, res) => __awaiter(void 0, void 0, void 0,
     }
 });
 exports.userGetDetailsController = userGetDetailsController;
+const userUpdateProfileController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+});
+exports.userUpdateProfileController = userUpdateProfileController;

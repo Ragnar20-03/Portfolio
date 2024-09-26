@@ -5,9 +5,11 @@ import { cloudinary_start } from "./config/cloudinary";
 import { OTP } from "./services/otp/otp"
 import { sendOTP } from "./services/email/sendOtp";
 import { authRouter } from "./routes/auth/userAuth";
+import { router as userRouter } from "./routes/user/user";
 const app = express();
 app.use(express.json())
 app.use('/api/auth', authRouter)
+app.use('/api/user', userRouter)
 
 app.get('/otp', async (req, res) => {
     await sendOTP("ap7827681@gmail.com", "54545")

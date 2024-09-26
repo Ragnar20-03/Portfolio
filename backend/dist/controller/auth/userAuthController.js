@@ -18,6 +18,7 @@ const sendOtp_1 = require("../../services/email/sendOtp");
 const otp_1 = require("../../services/otp/otp");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const schema_1 = require("../../model/schema");
+const jwt_1 = require("../../services/jwt");
 let bcrypt_salt = 10;
 exports.router = express_1.default.Router();
 let otpInstance = otp_1.OTP.getInstance();
@@ -85,9 +86,11 @@ const userVerifyOtp_RegisterController = (req, res) => __awaiter(void 0, void 0,
             // Update the Auth document with the profile ID
             newUser.profileId = createdProfile._id; // Set profileId to the new profile's ID
             yield newUser.save(); // Save the updated Auth document
+            let token = (0, jwt_1.createToken)(newUser._id.toString());
             return res.status(200).json({
                 otp_msg: "success",
-                msg: "Registration Successful!"
+                msg: "Registration Successful!",
+                token
             });
         }
         return res.status(401).json({

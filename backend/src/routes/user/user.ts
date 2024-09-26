@@ -1,3 +1,8 @@
 import express from "express";
 
-export const userRouter = express.Router();
+import { userGetDetailsController } from "../../controller/user/userProfileController";
+
+export const router = express.Router();
+
+router.get('/details/:profileId', userGetDetailsController)
+router.post('/updateProfile',)

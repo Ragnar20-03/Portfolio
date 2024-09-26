@@ -3,6 +3,7 @@ import { sendOTP } from "../../services/email/sendOtp";
 import { OTP } from "../../services/otp/otp"
 import bcrypt from "bcrypt"
 import { Auth, Profile } from "../../model/schema";
+import { createToken } from "../../services/jwt";
 
 
 let bcrypt_salt = 10;
@@ -81,10 +82,11 @@ export const userVerifyOtp_RegisterController = async (req: Request, res: Respon
             // Update the Auth document with the profile ID
             newUser.profileId = createdProfile._id; // Set profileId to the new profile's ID
             await newUser.save(); // Save the updated Auth document
-
+            let token = createToken(newUser._id.toString(), newUser.profileId.toString())
             return res.status(200).json({
                 otp_msg: "success",
-                msg: "Registration Successful!"
+                msg: "Registration Successful!",
+                token
             });
         }
         return res.status(401).json({
