@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { FaGithub, FaLinkedin, FaEnvelope, FaBars, FaTimes, FaFileAlt, FaTimes as FaClose, FaMoon, FaSun } from 'react-icons/fa'
 
 type Project = {

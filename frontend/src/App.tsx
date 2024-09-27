@@ -7,6 +7,7 @@ function App() {
 
   return (
     <>
+      {alert ( "Page is in Developement !")}
       <Portfolio />
     </>
   )
