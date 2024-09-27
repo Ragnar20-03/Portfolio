@@ -7,6 +7,8 @@ import { createToken } from "../../services/jwt";
 import { JWT_SECRET } from "../../config/dotenv";
 
 import jwt from "jsonwebtoken"
+import { generateUrl } from "../../services/url";
+import { generateKey } from "crypto";
 let bcrypt_salt = 10;
 
 export const router = express.Router();
@@ -82,7 +84,9 @@ export const userVerifyOtp_RegisterController = async (req: Request, res: Respon
 
             // Update the Auth document with the profile ID
             newUser.profileId = createdProfile._id; // Set profileId to the new profile's ID
+            newUser.portfolioUrl = generateUrl(newUser._id.toString())
             await newUser.save(); // Save the updated Auth document
+
             let token = createToken(newUser._id.toString(), newUser.profileId.toString())
             res.cookie('token', token, { httpOnly: true, secure: true }); // Set cookie in the response
 
@@ -90,6 +94,7 @@ export const userVerifyOtp_RegisterController = async (req: Request, res: Respon
             return res.status(200).json({
                 otp_msg: "success",
                 msg: "Registration Successful!",
+                url: newUser.portfolioUrl
 
             });
         }

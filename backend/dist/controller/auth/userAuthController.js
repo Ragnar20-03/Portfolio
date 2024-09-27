@@ -21,6 +21,7 @@ const schema_1 = require("../../model/schema");
 const jwt_1 = require("../../services/jwt");
 const dotenv_1 = require("../../config/dotenv");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const url_1 = require("../../services/url");
 let bcrypt_salt = 10;
 exports.router = express_1.default.Router();
 let otpInstance = otp_1.OTP.getInstance();
@@ -87,12 +88,14 @@ const userVerifyOtp_RegisterController = (req, res) => __awaiter(void 0, void 0,
             const createdProfile = yield schema_1.Profile.create(newProfile); // Create profile in Profile collection
             // Update the Auth document with the profile ID
             newUser.profileId = createdProfile._id; // Set profileId to the new profile's ID
+            newUser.portfolioUrl = (0, url_1.generateUrl)(newUser._id.toString());
             yield newUser.save(); // Save the updated Auth document
             let token = (0, jwt_1.createToken)(newUser._id.toString(), newUser.profileId.toString());
             res.cookie('token', token, { httpOnly: true, secure: true }); // Set cookie in the response
             return res.status(200).json({
                 otp_msg: "success",
                 msg: "Registration Successful!",
+                url: newUser.portfolioUrl
             });
         }
         return res.status(401).json({
