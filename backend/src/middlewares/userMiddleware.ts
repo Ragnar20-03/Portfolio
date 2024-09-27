@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 import { JWT_SECRET } from "../config/dotenv";
+import { Auth } from "../model/schema";
 
 
 interface JwtPayload {
@@ -24,9 +25,14 @@ export const M_userTokenMiddleware = async (req: Request, res: Response, next: N
 
         if (verifiedToken) {
             if (verifiedToken.authId && verifiedToken.profileId) {
-                req.authId = verifiedToken.authId;
-                req.profileId = verifiedToken.profileId;
-                next();
+                let query = await Auth.findOne({ _id: verifiedToken.authId })
+                if (query) {
+
+
+                    req.authId = verifiedToken.authId;
+                    req.profileId = verifiedToken.profileId;
+                    next();
+                }
             } else {
                 return res.status(401).json({ msg: "UnAuthorized Request !" });
 

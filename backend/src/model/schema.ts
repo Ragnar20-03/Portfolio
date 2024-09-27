@@ -96,7 +96,7 @@ const profileSchema = new Schema({
     linkedin: { type: String, required: false },
     skills: [skillSchema], // Array of Skill subdocuments
     projects: [{ type: Schema.Types.ObjectId, ref: 'Project' }], // Array of Project object IDs
-    education: [{ type: Schema.Types.ObjectId, ref: 'Education' }], // Array of Education object IDs
+    education: educationSchema, // Array of Education object IDs
     certifications: [{ type: Schema.Types.ObjectId, ref: 'Certification' }], // Array of Certification object IDs
     courses: [{ type: Schema.Types.ObjectId, ref: 'Course' }], // Array of Course object IDs
     competitions: [{ type: Schema.Types.ObjectId, ref: 'Competition' }], // Array of Competition object IDs

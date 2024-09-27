@@ -88,7 +88,7 @@ const profileSchema = new mongoose_1.Schema({
     linkedin: { type: String, required: false },
     skills: [skillSchema], // Array of Skill subdocuments
     projects: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Project' }], // Array of Project object IDs
-    education: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Education' }], // Array of Education object IDs
+    education: educationSchema, // Array of Education object IDs
     certifications: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Certification' }], // Array of Certification object IDs
     courses: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Course' }], // Array of Course object IDs
     competitions: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Competition' }], // Array of Competition object IDs

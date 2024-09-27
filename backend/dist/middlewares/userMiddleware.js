@@ -35,6 +35,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.M_userTokenMiddleware = void 0;
 const jsonwebtoken_1 = __importStar(require("jsonwebtoken"));
 const dotenv_1 = require("../config/dotenv");
+const schema_1 = require("../model/schema");
 const M_userTokenMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Check for cookie presence and value
@@ -46,9 +47,12 @@ const M_userTokenMiddleware = (req, res, next) => __awaiter(void 0, void 0, void
         let verifiedToken = jsonwebtoken_1.default.verify(token, dotenv_1.JWT_SECRET);
         if (verifiedToken) {
             if (verifiedToken.authId && verifiedToken.profileId) {
-                req.authId = verifiedToken.authId;
-                req.profileId = verifiedToken.profileId;
-                next();
+                let query = yield schema_1.Auth.findOne({ _id: verifiedToken.authId });
+                if (query) {
+                    req.authId = verifiedToken.authId;
+                    req.profileId = verifiedToken.profileId;
+                    next();
+                }
             }
             else {
                 return res.status(401).json({ msg: "UnAuthorized Request !" });
