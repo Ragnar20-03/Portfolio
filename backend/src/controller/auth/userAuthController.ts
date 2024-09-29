@@ -17,6 +17,7 @@ let otpInstance = OTP.getInstance()
 
 export const userGetOtpController = async (req: Request, res: Response) => {
     try {
+
         if (!req.body.email) {
             return res.status(401).json({
                 msg: "Email is required for sending otp !"
@@ -112,6 +113,7 @@ export const userVerifyOtp_RegisterController = async (req: Request, res: Respon
 
 export const userLoginController = async (req: Request, res: Response) => {
     try {
+
         if (!req.body.email || !req.body.password) {
             return res.status(401).json({
                 msg: "All Feilds Are required !"
