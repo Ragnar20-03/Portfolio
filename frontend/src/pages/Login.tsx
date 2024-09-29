@@ -6,7 +6,7 @@ import { Button } from "../components/AllComponents";
 import { Input } from "../components/AllComponents";
 import { Label } from "../components/AllComponents";
 import { Moon, Sun } from "lucide-react";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -34,10 +34,10 @@ export default function LoginPage() {
       } else {
         console.log("Status code :  ", response.status);
       }
-    } catch (error: AxiosError | any) {
+    } catch (error: any) {
       console.log("error is : ", error);
 
-      setError("Invalid Details : " + error.response.data.msg);
+      setError("Invalid Details : ");
     }
   };
 
