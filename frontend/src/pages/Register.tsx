@@ -16,9 +16,11 @@ export default function RegisterPage() {
   const [otpSent, setOtpSent] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const getOtpHandler = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     try {
       let response = await axios.post(
         "http://localhost:5100/api/auth/get-otp",
@@ -28,6 +30,7 @@ export default function RegisterPage() {
         }
       );
       if (response.status === 200) {
+        setLoading(false);
         setOtpSent(true);
       } else {
         setError("already regsiter with this email , try login !");
@@ -120,7 +123,10 @@ export default function RegisterPage() {
                 type="email"
                 placeholder="Enter your email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setOtpSent(false);
+                }}
                 className={`w-full ${
                   darkMode ? "bg-gray-700 text-white" : "bg-white text-black"
                 }`}
@@ -163,7 +169,11 @@ export default function RegisterPage() {
                   : "bg-black text-white hover:bg-gray-800"
               }`}
             >
-              {otpSent ? "Verify OTP" : "Get OTP"}
+              {!loading
+                ? otpSent
+                  ? "Verify OTP"
+                  : "Get OTP"
+                : "Sending Otp ...."}
             </Button>
           </form>
           <div className="text-center">

@@ -6,8 +6,8 @@ import { Button } from "../components/AllComponents";
 import { Input } from "../components/AllComponents";
 import { Label } from "../components/AllComponents";
 import { Moon, Sun } from "lucide-react";
-import axios from "axios";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
+
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +15,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
 
   const loginhandler = async (e: React.FormEvent) => {
-    console.log("reached !");
+    setError("");
 
     e.preventDefault();
     try {
@@ -34,7 +34,7 @@ export default function LoginPage() {
       } else {
         console.log("Status code :  ", response.status);
       }
-    } catch (error: AxiosError) {
+    } catch (error: AxiosError | any) {
       console.log("error is : ", error);
 
       setError("Invalid Details : " + error.response.data.msg);
