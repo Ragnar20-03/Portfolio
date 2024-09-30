@@ -21,11 +21,14 @@ const userAuth_1 = require("./routes/auth/userAuth");
 const user_1 = require("./routes/user/user");
 const cors_1 = __importDefault(require("cors"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const rateLimiter_1 = require("./services/rateLimiter");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, cookie_parser_1.default)()); // Use cookie-parser here
+app.use('/api/auth/get-otp', rateLimiter_1.authApiLimiter);
+app.use('/api/auth/verify-otp', rateLimiter_1.authApiLimiter);
 app.use('/api/auth', userAuth_1.authRouter);
 app.use('/api/user', user_1.router);
 app.listen(dotenv_1.PORT, () => __awaiter(void 0, void 0, void 0, function* () {

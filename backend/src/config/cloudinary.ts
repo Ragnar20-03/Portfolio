@@ -1,7 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary';
 
-import clodiinary from "cloudinary"
-import { CloudinaryStorage } from 'multer-storage-cloudinary';
+
 import { CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, CLOUDINARY_CLOUD_NAME } from './dotenv';
 
 export async function cloudinary_start() {

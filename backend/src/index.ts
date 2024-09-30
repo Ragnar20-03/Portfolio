@@ -8,11 +8,14 @@ import { authRouter } from "./routes/auth/userAuth";
 import { router as userRouter } from "./routes/user/user";
 import cors from "cors"
 import cookieParser from "cookie-parser";
+import { authApiLimiter } from "./services/rateLimiter";
 const app = express();
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser()); // Use cookie-parser here
+app.use('/api/auth/get-otp', authApiLimiter)
+app.use('/api/auth/verify-otp', authApiLimiter)
 app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
 
