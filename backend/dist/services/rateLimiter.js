@@ -8,5 +8,7 @@ const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
 exports.authApiLimiter = (0, express_rate_limit_1.default)({
     windowMs: 10 * 60 * 1000,
     limit: 3,
-    message: "Too many request from this ip  . PLease try again after some time"
+    message: {
+        msg: "Too many request from this ip  . PLease try again after some time"
+    }
 });
