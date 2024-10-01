@@ -624,7 +624,7 @@ const Portfolio: React.FC = () => {
                     education, and skills.
                   </p>
                   <motion.a
-                    href="/path-to-your-resume.pdf"
+                    href="https://res.cloudinary.com/dpisj0lfy/raw/upload/v1727797655/uploads/resumes/resume_roshan-patil_1727797654509"
                     download
                     className={`inline-flex items-center ${
                       darkMode

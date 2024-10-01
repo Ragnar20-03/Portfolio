@@ -87,6 +87,7 @@ const profileSchema = new mongoose_1.Schema({
     github: { type: String, required: false },
     linkedin: { type: String, required: false },
     skills: [skillSchema], // Array of Skill subdocuments
+    resume: { type: String, default: "" },
     projects: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Project' }], // Array of Project object IDs
     education: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Education' }], // Array of Education object IDs
     certifications: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Certification' }], // Array of Certification object IDs

@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import { string } from 'zod';
 
 // Define schemas for subdocuments (nested objects in separate collections)
 const skillSchema = new Schema({
@@ -95,6 +96,7 @@ const profileSchema = new Schema({
     github: { type: String, required: false },
     linkedin: { type: String, required: false },
     skills: [skillSchema], // Array of Skill subdocuments
+    resume: { type: String, default: "" },
     projects: [{ type: Schema.Types.ObjectId, ref: 'Project' }], // Array of Project object IDs
     education: [{ type: Schema.Types.ObjectId, ref: 'Education' }], // Array of Education object IDs
     certifications: [{ type: Schema.Types.ObjectId, ref: 'Certification' }], // Array of Certification object IDs
