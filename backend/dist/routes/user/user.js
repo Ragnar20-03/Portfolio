@@ -13,7 +13,7 @@ const cloudinary_1 = require("../../config/cloudinary");
 exports.router = express_1.default.Router();
 exports.router.get('/details/:profileId', userProfileController_1.userGetProfileDetailsController);
 exports.router.put('/updateProfile', userMiddleware_1.M_userTokenMiddleware, userProfileController_1.userUpdateProfileController);
-exports.router.put('/updateAvatar', cloudinary_1.upload.single('file'), userProfileController_1.userUpdateAvatarController);
+exports.router.put('/updateAvatar', userMiddleware_1.M_userTokenMiddleware, cloudinary_1.upload.single('file'), userProfileController_1.userUpdateAvatarController);
 // ------------------------------------------------------------------------------
 exports.router.post('/addProject', userMiddleware_1.M_userTokenMiddleware, userProjectController_1.userAddProjectController);
 exports.router.put('/updateProject/:projectId', userMiddleware_1.M_userTokenMiddleware, userProjectController_1.userUpdateProjectController);

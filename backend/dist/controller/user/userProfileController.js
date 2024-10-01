@@ -97,43 +97,50 @@ const userUpdateAvatarController = (req, res) => __awaiter(void 0, void 0, void 
         if (!profile) {
             return res.status(404).json({ msg: "Profile not found!" });
         }
-        // Check if a file was uploaded
         if (!req.file) {
             return res.status(400).json({ msg: "No file found!" });
         }
-        // Previous avatar (if it exists)
         const prevAvatar = profile.avatar;
-        // Wrap the Cloudinary upload_stream in a promise
-        const streamUpload = (buffer) => {
+        // Generate a unique public ID using profile ID and current timestamp
+        const publicId = `avatar_${profileId}_${Date.now()}`;
+        // Wrap the Cloudinary upload in a promise
+        const cloudinaryUpload = (buffer, publicId) => {
             return new Promise((resolve, reject) => {
-                const stream = cloudinary_1.v2.uploader.upload_stream({ folder: 'uploads/avatar' }, (error, result) => {
-                    if (error) {
-                        reject(error); // Reject the promise if an error occurs
-                    }
-                    else {
-                        resolve(result); // Resolve the promise with the result
-                    }
+                const stream = cloudinary_1.v2.uploader.upload_stream({
+                    folder: 'uploads/avatar',
+                    public_id: publicId,
+                    overwrite: true
+                }, (error, result) => {
+                    if (error)
+                        reject(error);
+                    else
+                        resolve(result);
                 });
-                stream.end(buffer); // Pass the buffer (file data)
+                stream.end(buffer);
             });
         };
-        // Upload the file to Cloudinary and await the result
-        const result = yield streamUpload(req.file.buffer);
-        // Update the profile with the new avatar URL
-        profile.avatar = result.secure_url;
-        yield profile.save(); // Save the updated profile
-        // Optionally: Delete the previous avatar from Cloudinary
+        // Upload the new avatar
+        const uploadResult = yield cloudinaryUpload(req.file.buffer, publicId);
+        // Update only the avatar field in the database
+        yield schema_1.Profile.updateOne({ _id: profileId }, { $set: { avatar: uploadResult.secure_url } });
+        // Delete the previous avatar from Cloudinary if it exists
         if (prevAvatar) {
-            const publicId = (_a = prevAvatar.split('/').pop()) === null || _a === void 0 ? void 0 : _a.split('.')[0];
-            if (publicId) {
-                yield cloudinary_1.v2.uploader.destroy(`uploads/${publicId}`);
+            const prevPublicId = (_a = prevAvatar.split('/').pop()) === null || _a === void 0 ? void 0 : _a.split('.')[0];
+            if (prevPublicId) {
+                try {
+                    yield cloudinary_1.v2.uploader.destroy(`uploads/avatar/${prevPublicId}`);
+                    console.log(`Previous avatar removed: ${prevPublicId}`);
+                }
+                catch (deleteError) {
+                    console.error("Error deleting previous avatar:", deleteError);
+                }
             }
         }
-        // Return the response with the new avatar URL
-        return res.json({ message: 'Upload successful', avatar: result.secure_url });
+        return res.json({ message: "Avatar updated successfully", avatar: uploadResult.secure_url });
     }
     catch (error) {
-        return res.status(500).json({ message: 'Server error', error });
+        console.error("Server error:", error);
+        return res.status(500).json({ message: 'Server error' });
     }
 });
 exports.userUpdateAvatarController = userUpdateAvatarController;

@@ -11,7 +11,7 @@ export const router = express.Router();
 
 router.get('/details/:profileId', userGetProfileDetailsController)
 router.put('/updateProfile', M_userTokenMiddleware, userUpdateProfileController)
-router.put('/updateAvatar', upload.single('file'), userUpdateAvatarController)
+router.put('/updateAvatar', M_userTokenMiddleware, upload.single('file'), userUpdateAvatarController)
 // ------------------------------------------------------------------------------
 router.post('/addProject', M_userTokenMiddleware, userAddProjectController)
 router.put('/updateProject/:projectId', M_userTokenMiddleware, userUpdateProjectController)
