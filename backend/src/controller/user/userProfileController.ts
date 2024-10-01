@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Profile } from "../../model/schema";
 import mongoose from "mongoose";
 import { v2 as cloudinary } from 'cloudinary';
+import { removeAvatar, uploadAvatar } from "../../services/cloudinary";
 
 
 
@@ -119,34 +120,19 @@ export const userUpdateAvatarController = async (req: Request, res: Response) =>
         }
 
         if (!req.file) {
+
             return res.status(400).json({ msg: "No file found!" });
         }
 
         const prevAvatar = profile.avatar;
 
         // Generate a unique public ID using profile ID and current timestamp
-        const publicId = `avatar_${profileId}_${Date.now()}`;
+        const publicId = `avatar_${profile.name?.split(' ')[0]}-${profile.name?.split(' ')[1]}_${Date.now()}`;
 
-        // Wrap the Cloudinary upload in a promise
-        const cloudinaryUpload = (buffer: Buffer, publicId: string): Promise<any> => {
-            return new Promise((resolve, reject) => {
-                const stream = cloudinary.uploader.upload_stream(
-                    {
-                        folder: 'uploads/avatar',
-                        public_id: publicId,
-                        overwrite: true
-                    },
-                    (error, result) => {
-                        if (error) reject(error);
-                        else resolve(result);
-                    }
-                );
-                stream.end(buffer);
-            });
-        };
+
 
         // Upload the new avatar
-        const uploadResult = await cloudinaryUpload(req.file.buffer, publicId);
+        const uploadResult = await uploadAvatar(req.file.buffer, publicId);
 
         // Update only the avatar field in the database
         await Profile.updateOne(
@@ -158,12 +144,7 @@ export const userUpdateAvatarController = async (req: Request, res: Response) =>
         if (prevAvatar) {
             const prevPublicId = prevAvatar.split('/').pop()?.split('.')[0];
             if (prevPublicId) {
-                try {
-                    await cloudinary.uploader.destroy(`uploads/avatar/${prevPublicId}`);
-                    console.log(`Previous avatar removed: ${prevPublicId}`);
-                } catch (deleteError) {
-                    console.error("Error deleting previous avatar:", deleteError);
-                }
+                await removeAvatar(prevPublicId)
             }
         }
 
@@ -173,3 +154,8 @@ export const userUpdateAvatarController = async (req: Request, res: Response) =>
         return res.status(500).json({ message: 'Server error' });
     }
 };
+
+
+export const userRemoveAvatarController = async (req: Request, res: Response) => {
+
+}

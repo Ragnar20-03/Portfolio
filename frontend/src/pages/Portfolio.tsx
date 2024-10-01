@@ -421,7 +421,7 @@ const Portfolio: React.FC = () => {
                   className="md:w-1/2 mb-8 md:mb-0"
                 >
                   <img
-                    src="https://res.cloudinary.com/dpisj0lfy/image/upload/v1727793613/uploads/avatar/avatar_66f585cdf9aa8646e828bbf4_1727793611911.png"
+                    src="https://res.cloudinary.com/dpisj0lfy/image/upload/v1727797860/uploads/avatar/avatar_66f9061cbdba2e31b8ef9b56_1727797857261.png"
                     alt="profile image"
                     width={250}
                     height={250}

@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { Profile } from "../../model/schema";
 
 import { v2 as cloudinary } from "cloudinary"
+import { removeResume, uploadResume } from "../../services/cloudinary";
 
 export const userResumeController = async (req: Request, res: Response) => {
     try {
@@ -26,25 +27,10 @@ export const userResumeController = async (req: Request, res: Response) => {
         const publicId = `resume_${profile.name?.split(' ')[0]}-${profile.name?.split(' ')[1]}_${Date.now()}`;
 
         // Wrap the Cloudinary upload in a promise
-        const cloudinaryUpload = (buffer: Buffer, publicId: string): Promise<any> => {
-            return new Promise((resolve, reject) => {
-                const stream = cloudinary.uploader.upload_stream(
-                    {
-                        folder: 'uploads/resumes',
-                        public_id: publicId,
-                        resource_type: 'raw'
-                    },
-                    (error, result) => {
-                        if (error) reject(error);
-                        else resolve(result);
-                    }
-                );
-                stream.end(buffer);
-            });
-        };
+
 
         // Upload the new resume
-        const uploadResult = await cloudinaryUpload(req.file.buffer, publicId);
+        const uploadResult = await uploadResume(req.file.buffer, publicId);
 
         // Update only the resume field in the database
         await Profile.updateOne(
@@ -56,12 +42,7 @@ export const userResumeController = async (req: Request, res: Response) => {
         if (prevResume) {
             const prevPublicId = prevResume.split('/').pop()?.split('.')[0];
             if (prevPublicId) {
-                try {
-                    await cloudinary.uploader.destroy(`uploads/resumes/${prevPublicId}`, { resource_type: 'raw' });
-                    console.log(`Previous resume removed: ${prevPublicId}`);
-                } catch (deleteError) {
-                    console.error("Error deleting previous resume:", deleteError);
-                }
+                await removeResume(prevPublicId)
             }
         }
 

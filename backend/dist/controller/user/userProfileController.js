@@ -12,10 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userUpdateAvatarController = exports.userUpdateProfileController = exports.userGetProfileDetailsController = void 0;
+exports.userRemoveAvatarController = exports.userUpdateAvatarController = exports.userUpdateProfileController = exports.userGetProfileDetailsController = void 0;
 const schema_1 = require("../../model/schema");
 const mongoose_1 = __importDefault(require("mongoose"));
-const cloudinary_1 = require("cloudinary");
+const cloudinary_1 = require("../../services/cloudinary");
 const userGetProfileDetailsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const profileId = req.params.profileId;
@@ -90,7 +90,7 @@ const userUpdateProfileController = (req, res) => __awaiter(void 0, void 0, void
 });
 exports.userUpdateProfileController = userUpdateProfileController;
 const userUpdateAvatarController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _a, _b, _c;
     try {
         const profileId = req.profileId;
         const profile = yield schema_1.Profile.findOne({ _id: profileId });
@@ -102,38 +102,16 @@ const userUpdateAvatarController = (req, res) => __awaiter(void 0, void 0, void 
         }
         const prevAvatar = profile.avatar;
         // Generate a unique public ID using profile ID and current timestamp
-        const publicId = `avatar_${profileId}_${Date.now()}`;
-        // Wrap the Cloudinary upload in a promise
-        const cloudinaryUpload = (buffer, publicId) => {
-            return new Promise((resolve, reject) => {
-                const stream = cloudinary_1.v2.uploader.upload_stream({
-                    folder: 'uploads/avatar',
-                    public_id: publicId,
-                    overwrite: true
-                }, (error, result) => {
-                    if (error)
-                        reject(error);
-                    else
-                        resolve(result);
-                });
-                stream.end(buffer);
-            });
-        };
+        const publicId = `avatar_${(_a = profile.name) === null || _a === void 0 ? void 0 : _a.split(' ')[0]}-${(_b = profile.name) === null || _b === void 0 ? void 0 : _b.split(' ')[1]}_${Date.now()}`;
         // Upload the new avatar
-        const uploadResult = yield cloudinaryUpload(req.file.buffer, publicId);
+        const uploadResult = yield (0, cloudinary_1.uploadAvatar)(req.file.buffer, publicId);
         // Update only the avatar field in the database
         yield schema_1.Profile.updateOne({ _id: profileId }, { $set: { avatar: uploadResult.secure_url } });
         // Delete the previous avatar from Cloudinary if it exists
         if (prevAvatar) {
-            const prevPublicId = (_a = prevAvatar.split('/').pop()) === null || _a === void 0 ? void 0 : _a.split('.')[0];
+            const prevPublicId = (_c = prevAvatar.split('/').pop()) === null || _c === void 0 ? void 0 : _c.split('.')[0];
             if (prevPublicId) {
-                try {
-                    yield cloudinary_1.v2.uploader.destroy(`uploads/avatar/${prevPublicId}`);
-                    console.log(`Previous avatar removed: ${prevPublicId}`);
-                }
-                catch (deleteError) {
-                    console.error("Error deleting previous avatar:", deleteError);
-                }
+                yield (0, cloudinary_1.removeAvatar)(prevPublicId);
             }
         }
         return res.json({ message: "Avatar updated successfully", avatar: uploadResult.secure_url });
@@ -144,3 +122,6 @@ const userUpdateAvatarController = (req, res) => __awaiter(void 0, void 0, void 
     }
 });
 exports.userUpdateAvatarController = userUpdateAvatarController;
+const userRemoveAvatarController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+});
+exports.userRemoveAvatarController = userRemoveAvatarController;
