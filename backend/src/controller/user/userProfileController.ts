@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
-import { Auth, Profile } from "../../model/schema";
+import { Profile } from "../../model/schema";
 import mongoose from "mongoose";
+import { v2 as cloudinary } from 'cloudinary';
+
 
 
 interface Skill {
@@ -106,3 +108,61 @@ export const userUpdateProfileController = async (req: Request, res: Response) =
     }
 };
 
+
+export const userUpdateAvatarController = async (req: Request, res: Response) => {
+    try {
+        const profileId = req.profileId;
+
+        const profile = await Profile.findOne({ _id: profileId });
+
+        if (!profile) {
+            return res.status(404).json({ msg: "Profile not found!" });
+        }
+
+        // Check if a file was uploaded
+        if (!req.file) {
+            return res.status(400).json({ msg: "No file found!" });
+        }
+
+        // Previous avatar (if it exists)
+        const prevAvatar = profile.avatar;
+
+        // Wrap the Cloudinary upload_stream in a promise
+        const streamUpload = (buffer: Buffer): Promise<any> => {
+            return new Promise((resolve, reject) => {
+                const stream = cloudinary.uploader.upload_stream(
+                    { folder: 'uploads/avatar' },
+                    (error, result) => {
+                        if (error) {
+                            reject(error); // Reject the promise if an error occurs
+                        } else {
+                            resolve(result); // Resolve the promise with the result
+                        }
+                    }
+                );
+                stream.end(buffer); // Pass the buffer (file data)
+            });
+        };
+
+        // Upload the file to Cloudinary and await the result
+        const result = await streamUpload(req.file.buffer);
+
+        // Update the profile with the new avatar URL
+        profile.avatar = result.secure_url;
+        await profile.save(); // Save the updated profile
+
+        // Optionally: Delete the previous avatar from Cloudinary
+        if (prevAvatar) {
+            const publicId = prevAvatar.split('/').pop()?.split('.')[0];
+            if (publicId) {
+                await cloudinary.uploader.destroy(`uploads/${publicId}`);
+            }
+        }
+
+        // Return the response with the new avatar URL
+        return res.json({ message: 'Upload successful', avatar: result.secure_url });
+
+    } catch (error) {
+        return res.status(500).json({ message: 'Server error', error });
+    }
+}

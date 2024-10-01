@@ -12,9 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userUpdateProfileController = exports.userGetProfileDetailsController = void 0;
+exports.userUpdateAvatarController = exports.userUpdateProfileController = exports.userGetProfileDetailsController = void 0;
 const schema_1 = require("../../model/schema");
 const mongoose_1 = __importDefault(require("mongoose"));
+const cloudinary_1 = require("cloudinary");
 const userGetProfileDetailsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const profileId = req.params.profileId;
@@ -88,3 +89,51 @@ const userUpdateProfileController = (req, res) => __awaiter(void 0, void 0, void
     }
 });
 exports.userUpdateProfileController = userUpdateProfileController;
+const userUpdateAvatarController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    try {
+        const profileId = req.profileId;
+        const profile = yield schema_1.Profile.findOne({ _id: profileId });
+        if (!profile) {
+            return res.status(404).json({ msg: "Profile not found!" });
+        }
+        // Check if a file was uploaded
+        if (!req.file) {
+            return res.status(400).json({ msg: "No file found!" });
+        }
+        // Previous avatar (if it exists)
+        const prevAvatar = profile.avatar;
+        // Wrap the Cloudinary upload_stream in a promise
+        const streamUpload = (buffer) => {
+            return new Promise((resolve, reject) => {
+                const stream = cloudinary_1.v2.uploader.upload_stream({ folder: 'uploads/avatar' }, (error, result) => {
+                    if (error) {
+                        reject(error); // Reject the promise if an error occurs
+                    }
+                    else {
+                        resolve(result); // Resolve the promise with the result
+                    }
+                });
+                stream.end(buffer); // Pass the buffer (file data)
+            });
+        };
+        // Upload the file to Cloudinary and await the result
+        const result = yield streamUpload(req.file.buffer);
+        // Update the profile with the new avatar URL
+        profile.avatar = result.secure_url;
+        yield profile.save(); // Save the updated profile
+        // Optionally: Delete the previous avatar from Cloudinary
+        if (prevAvatar) {
+            const publicId = (_a = prevAvatar.split('/').pop()) === null || _a === void 0 ? void 0 : _a.split('.')[0];
+            if (publicId) {
+                yield cloudinary_1.v2.uploader.destroy(`uploads/${publicId}`);
+            }
+        }
+        // Return the response with the new avatar URL
+        return res.json({ message: 'Upload successful', avatar: result.secure_url });
+    }
+    catch (error) {
+        return res.status(500).json({ message: 'Server error', error });
+    }
+});
+exports.userUpdateAvatarController = userUpdateAvatarController;

@@ -1,5 +1,5 @@
 import { v2 as cloudinary } from 'cloudinary';
-
+import multer from "multer"
 
 import { CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, CLOUDINARY_CLOUD_NAME } from './dotenv';
 
@@ -16,3 +16,7 @@ export async function cloudinary_start() {
     console.log(":-cloudinary Service has been started");
 
 }
+
+const storage = multer.memoryStorage();
+
+export const upload = multer({ storage })

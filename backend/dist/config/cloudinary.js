@@ -8,9 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cloudinary_start = void 0;
+exports.upload = exports.cloudinary_start = void 0;
 const cloudinary_1 = require("cloudinary");
+const multer_1 = __importDefault(require("multer"));
 const dotenv_1 = require("./dotenv");
 function cloudinary_start() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -24,3 +28,5 @@ function cloudinary_start() {
     });
 }
 exports.cloudinary_start = cloudinary_start;
+const storage = multer_1.default.memoryStorage();
+exports.upload = (0, multer_1.default)({ storage });

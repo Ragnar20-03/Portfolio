@@ -1,15 +1,17 @@
 import express from "express";
 
-import { userGetProfileDetailsController, userUpdateProfileController } from "../../controller/user/userProfileController";
+import { userGetProfileDetailsController, userUpdateAvatarController, userUpdateProfileController } from "../../controller/user/userProfileController";
 import { M_userTokenMiddleware } from "../../middlewares/userMiddleware";
 import { userAddProjectController, userUpdateProjectController } from "../../controller/user/userProjectController";
 import { userAddEducationController } from "../../controller/user/userEducationController";
+import { upload } from "../../config/cloudinary";
 
 
 export const router = express.Router();
 
 router.get('/details/:profileId', userGetProfileDetailsController)
 router.put('/updateProfile', M_userTokenMiddleware, userUpdateProfileController)
+router.put('/updateAvatar', upload.single('file'), userUpdateAvatarController)
 // ------------------------------------------------------------------------------
 router.post('/addProject', M_userTokenMiddleware, userAddProjectController)
 router.put('/updateProject/:projectId', M_userTokenMiddleware, userUpdateProjectController)
