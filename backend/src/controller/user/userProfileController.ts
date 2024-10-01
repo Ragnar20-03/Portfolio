@@ -126,6 +126,11 @@ export const userUpdateAvatarController = async (req: Request, res: Response) =>
 
         const prevAvatar = profile.avatar;
 
+        const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        if (!allowedMimeTypes.includes(req.file.mimetype)) {
+            return res.status(400).json({ msg: "Only image files (JPEG, PNG, GIF, WebP) are allowed!" });
+        }
+
         // Generate a unique public ID using profile ID and current timestamp
         const publicId = `avatar_${profile.name?.split(' ')[0]}-${profile.name?.split(' ')[1]}_${Date.now()}`;
 

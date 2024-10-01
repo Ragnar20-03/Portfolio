@@ -101,6 +101,10 @@ const userUpdateAvatarController = (req, res) => __awaiter(void 0, void 0, void 
             return res.status(400).json({ msg: "No file found!" });
         }
         const prevAvatar = profile.avatar;
+        const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        if (!allowedMimeTypes.includes(req.file.mimetype)) {
+            return res.status(400).json({ msg: "Only image files (JPEG, PNG, GIF, WebP) are allowed!" });
+        }
         // Generate a unique public ID using profile ID and current timestamp
         const publicId = `avatar_${(_a = profile.name) === null || _a === void 0 ? void 0 : _a.split(' ')[0]}-${(_b = profile.name) === null || _b === void 0 ? void 0 : _b.split(' ')[1]}_${Date.now()}`;
         // Upload the new avatar
