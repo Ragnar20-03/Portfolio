@@ -1,7 +1,6 @@
 import { Request, Response } from "express"
 import { Profile } from "../../model/schema";
 
-import { v2 as cloudinary } from "cloudinary"
 import { removeResume, uploadResume } from "../../services/cloudinary";
 
 export const userResumeController = async (req: Request, res: Response) => {

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeResume = exports.uploadResume = exports.removeAvatar = exports.uploadAvatar = void 0;
+exports.uploadImage = exports.removeResume = exports.uploadResume = exports.removeAvatar = exports.uploadAvatar = void 0;
 const cloudinary_1 = require("cloudinary");
 // Wrap the Cloudinary upload in a promise
 const uploadAvatar = (buffer, publicId) => {
@@ -64,3 +64,25 @@ const removeResume = (prevPublicId) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.removeResume = removeResume;
+const uploadImage = (buffer, publicId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        return new Promise((resolve, reject) => {
+            const stream = cloudinary_1.v2.uploader.upload_stream({
+                folder: 'uploads/project_images',
+                public_id: publicId,
+                overwrite: true,
+            }, (error, result) => {
+                if (error)
+                    reject(error);
+                else
+                    resolve(result);
+            });
+            stream.end(buffer);
+        });
+    }
+    catch (error) {
+        console.error('Error uploading image to Cloudinary:', error);
+        throw error;
+    }
+});
+exports.uploadImage = uploadImage;

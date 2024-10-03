@@ -12,9 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userUpdateProjectController = exports.userAddProjectController = void 0;
+exports.userProjectImageController = exports.userUpdateProjectController = exports.userAddProjectController = void 0;
 const schema_1 = require("../../model/schema");
 const mongoose_1 = __importDefault(require("mongoose"));
+const cloudinary_1 = require("../../services/cloudinary");
 const userAddProjectController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const authId = req.authId;
@@ -27,23 +28,21 @@ const userAddProjectController = (req, res) => __awaiter(void 0, void 0, void 0,
             return res.status(404).json({ message: 'User Profile not found' });
         }
         // Create a new project
-        const newProject = new schema_1.Project({
+        const newProject = yield schema_1.Project.create({
             name,
             description,
             technologies,
             githubLink,
             website,
-            images
+            images: []
         });
-        // Save the new project
-        const savedProject = yield newProject.save();
-        // Add the new project to the profile's projects array
-        profile.projects.push(savedProject._id);
-        // Save the updated profile
-        yield profile.save();
+        // Add the new project's ID to the profile's projects array
+        yield schema_1.Profile.findByIdAndUpdate(profileId, {
+            $push: { projects: newProject._id }
+        });
         return res.status(200).json({
             message: 'Project added successfully',
-            project: savedProject
+            project: newProject
         });
     }
     catch (error) {
@@ -97,3 +96,35 @@ const userUpdateProjectController = (req, res) => __awaiter(void 0, void 0, void
     }
 });
 exports.userUpdateProjectController = userUpdateProjectController;
+const userProjectImageController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const projectId = req.params.projectId;
+        const profileId = req.profileId;
+        const files = req.files;
+        if (!files || files.length === 0) {
+            return res.status(400).json({ message: 'No images provided' });
+        }
+        const project = yield schema_1.Project.findById(projectId);
+        if (!project) {
+            return res.status(404).json({ message: 'Project not found' });
+        }
+        // Upload new images to Cloudinary
+        const uploadedImages = yield Promise.all(files.map(file => (0, cloudinary_1.uploadAvatar)(file.buffer, `project_${projectId}_${Date.now()}_${file.originalname}`)));
+        // Combine existing images with new uploaded images
+        const updatedImages = [...project.images, ...uploadedImages];
+        // Update the project with new images
+        const updatedProject = yield schema_1.Project.findByIdAndUpdate(projectId, { $set: { images: updatedImages } }, { new: true });
+        if (!updatedProject) {
+            return res.status(404).json({ message: 'Project not found after update' });
+        }
+        return res.status(200).json({
+            message: 'Project images updated successfully',
+            images: updatedProject.images
+        });
+    }
+    catch (error) {
+        console.error('Error handling project images:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+});
+exports.userProjectImageController = userProjectImageController;

@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { Profile, Project } from "../../model/schema";
 import mongoose from "mongoose";
-import { string } from "zod";
+import { uploadAvatar, uploadImage } from "../../services/cloudinary";
+
 
 export const userAddProjectController = async (req: Request, res: Response) => {
     try {
-
         const authId = req.authId;
         const profileId = req.profileId;
 
@@ -18,35 +18,31 @@ export const userAddProjectController = async (req: Request, res: Response) => {
             return res.status(404).json({ message: 'User Profile not found' });
         }
 
+
         // Create a new project
-        const newProject = new Project({
+        const newProject = await Project.create({
             name,
             description,
             technologies,
             githubLink,
             website,
-            images
+            images: []
         });
 
-        // Save the new project
-        const savedProject = await newProject.save();
-
-        // Add the new project to the profile's projects array
-        profile.projects.push(savedProject._id);
-
-        // Save the updated profile
-        await profile.save();
+        // Add the new project's ID to the profile's projects array
+        await Profile.findByIdAndUpdate(profileId, {
+            $push: { projects: newProject._id }
+        });
 
         return res.status(200).json({
             message: 'Project added successfully',
-            project: savedProject
+            project: newProject
         });
     } catch (error) {
         console.log("error is : ", error);
         res.status(500).json({
             msg: "Something went wrong !"
-        })
-
+        });
     }
 }
 
@@ -104,3 +100,4 @@ export const userUpdateProjectController = async (req: Request, res: Response) =
         return res.status(500).json({ message: 'Internal server error' });
     }
 }
+

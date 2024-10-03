@@ -20,7 +20,7 @@ router.put('/updateAvatar', M_userTokenMiddleware, upload.single('file'), userUp
 // Project
 router.post('/addProject', M_userTokenMiddleware, userAddProjectController)
 router.put('/updateProject/:projectId', M_userTokenMiddleware, userUpdateProjectController)
-
+// router.put('/images/:projectId', M_userTokenMiddleware, upload.array('images', 3), userProjectImageController)
 
 // --------------------------------------------------------------------------------------------------------
 // education
