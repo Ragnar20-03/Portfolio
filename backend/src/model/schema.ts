@@ -58,6 +58,7 @@ const certificationSchema = new Schema({
     rank: { type: String },
     year: { type: String, required: false },
     preview: { type: String, required: false }
+
 });
 
 const courseSchema = new Schema({

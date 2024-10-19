@@ -31,9 +31,6 @@ app.use('/api/auth/get-otp', rateLimiter_1.authApiLimiter);
 app.use('/api/auth/verify-otp', rateLimiter_1.authApiLimiter);
 app.use('/api/auth', userAuth_1.authRouter);
 app.use('/api/user', user_1.router);
-app.get('/roshan', (req, res) => {
-    res.send("./index.html");
-});
 app.listen(dotenv_1.PORT, () => __awaiter(void 0, void 0, void 0, function* () {
     let instance = otp_1.OTP.getInstance();
     yield (0, db_1.connect_db)();

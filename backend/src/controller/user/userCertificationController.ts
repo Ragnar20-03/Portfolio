@@ -48,6 +48,70 @@ export const userAddCertificationController = async (req: Request, res: Response
     }
 };
 
+
+
+export const userUpdateCertificationController = async (req: Request, res: Response) => {
+    try {
+        const profileId = req.profileId;
+        const certificationId = req.params.certificationId;
+
+        // Validate if certificationId is a valid ObjectId
+        if (!mongoose.Types.ObjectId.isValid(certificationId)) {
+            return res.status(400).json({ message: 'Invalid Certification ID' });
+        }
+
+        // Validate if the profile exists
+        const profile = await Profile.findById(profileId);
+        if (!profile) {
+            return res.status(404).json({ message: 'User Profile not found' });
+        }
+
+        // Check if the certification is associated with the profile
+        const isCertificationAssociated = profile.certifications.includes(new mongoose.Types.ObjectId(certificationId));
+        if (!isCertificationAssociated) {
+            return res.status(403).json({ message: 'This certification is not associated with your profile' });
+        }
+
+        // Extract the updated certification details from the request body
+        const { logo, name, organization, rank, year, preview, } = req.body;
+
+        // Validate necessary fields
+        if (!name || !organization || !year) {
+            return res.status(400).json({ message: 'Name, Organization, and Year are required!' });
+        }
+
+        // Update the certification details
+        const updatedCertification = await Certification.findByIdAndUpdate(
+            certificationId,
+            {
+                $set: {
+                    logo: logo || '#', // Default logo if not provided
+                    name,
+                    organization,
+                    rank: rank || '', // Optional field, default to empty string if not provided
+                    year,
+                    preview: preview || '#' // Default preview if not provided
+                }
+            },
+            { new: true, runValidators: true } // Return updated doc, apply validation
+        );
+
+        if (!updatedCertification) {
+            return res.status(404).json({ message: 'Certification not found' });
+        }
+
+        return res.status(200).json({
+            message: 'Certification updated successfully',
+            certification: updatedCertification,
+        });
+    } catch (error) {
+        console.error('Error updating certification:', error);
+        res.status(500).json({ message: 'Something went wrong!' });
+    }
+};
+
+
+
 export const userCertificationPreview = async (req: Request, res: Response) => {
     try {
         const profileId = req.profileId;

@@ -7,8 +7,8 @@ import { userAddEducationController, userUpdateEducationController } from "../..
 import { upload } from "../../config/cloudinary";
 import { Project } from "../../model/schema";
 import { userResumeController } from "../../controller/user/userResumeController";
-import { userAddCourseController, userAddPreviewController, userUpdateCourseController } from "../../controller/user/userAddCourseController";
-import { userAddCertificationController, userCertificationPreview } from "../../controller/user/userAddCertificationController";
+import { userAddCourseController, userAddPreviewController, userUpdateCourseController } from "../../controller/user/userCourseController";
+import { userAddCertificationController, userCertificationPreview, userUpdateCertificationController } from "../../controller/user/userCertificationController";
 
 
 export const router = express.Router();
@@ -39,6 +39,7 @@ router.put('/addCoursePreview/:courseId', M_userTokenMiddleware, upload.single('
 // --------------------------------------------------------------------------------------------------------
 // Certification
 router.post('/addCertification', M_userTokenMiddleware, userAddCertificationController)
+router.put('/updateCertification/:certificationId', M_userTokenMiddleware, userUpdateCertificationController)
 router.put('/addCertificationPreview/:certificationId', M_userTokenMiddleware, upload.single('file'), userCertificationPreview)
 // router.put('/addCoursePreview/:courseId', M_userTokenMiddleware, upload.single('file'), userAddPreviewController)
 
