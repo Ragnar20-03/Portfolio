@@ -139,41 +139,41 @@ export const userUpdateAvatarController = async (req: Request, res: Response) =>
                 );
 
                 return res.status(200).json({ message: "Avatar removed successfully" });
-            } else {
-                return res.status(400).json({ message: "No avatar to remove!" });
             }
         }
+        else {
 
-        // Case 2: A file is provided, validate it and update the avatar
-        const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-        if (!allowedMimeTypes.includes(req.file.mimetype)) {
-            return res.status(400).json({ message: "Only image files (JPEG, PNG, GIF, WebP) are allowed!" });
-        }
-
-        // Generate a unique public ID using the profile name and current timestamp
-        const publicId = `avatar_${profile.name?.split(' ')[0]}_${Date.now()}`;
-
-        // Upload the new avatar to cloud storage
-        const uploadResult = await uploadAvatar(req.file.buffer, publicId);
-
-        // Delete the previous avatar from cloud storage if it exists
-        if (prevAvatar) {
-            const prevPublicId = prevAvatar.split('/').pop()?.split('.')[0];
-            if (prevPublicId) {
-                await removeAvatar(prevPublicId); // Remove previous avatar from cloud storage
+            // Case 2: A file is provided, validate it and update the avatar
+            const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            if (!allowedMimeTypes.includes(req.file.mimetype)) {
+                return res.status(400).json({ message: "Only image files (JPEG, PNG, GIF, WebP) are allowed!" });
             }
+
+            // Generate a unique public ID using the profile name and current timestamp
+            const publicId = `avatar_${profile.name?.split(' ')[0]}_${Date.now()}`;
+
+            // Upload the new avatar to cloud storage
+            const uploadResult = await uploadAvatar(req.file.buffer, publicId);
+
+            // Delete the previous avatar from cloud storage if it exists
+            if (prevAvatar) {
+                const prevPublicId = prevAvatar.split('/').pop()?.split('.')[0];
+                if (prevPublicId) {
+                    await removeAvatar(prevPublicId); // Remove previous avatar from cloud storage
+                }
+            }
+
+            // Update the profile with the new avatar URL
+            await Profile.updateOne(
+                { _id: profileId },
+                { $set: { avatar: uploadResult.secure_url } }
+            );
+
+            return res.status(200).json({
+                message: "Avatar updated successfully",
+                avatar: uploadResult.secure_url
+            });
         }
-
-        // Update the profile with the new avatar URL
-        await Profile.updateOne(
-            { _id: profileId },
-            { $set: { avatar: uploadResult.secure_url } }
-        );
-
-        return res.status(200).json({
-            message: "Avatar updated successfully",
-            avatar: uploadResult.secure_url
-        });
     } catch (error) {
         console.error("Error updating avatar:", error);
         return res.status(500).json({ message: "Server error" });

@@ -162,26 +162,26 @@ export const userAddPreviewController = async (req: Request, res: Response) => {
                 if (prevPublicId) {
                     await removeCoursePreview(prevPublicId); // Function to remove the preview from cloud storage
                 }
+
+                // Generate a unique public ID for the new preview using course ID and current timestamp
+                const publicId = `coursePreview_${profile.name?.split(' ')[0]}_${courseId}_${Date.now()}`;
+
+                // Upload the new file to cloud storage (assuming you're using Cloudinary or a similar service)
+                const uploadResult = await uploadCousePreview(req.file.buffer, publicId);
+
+                // Update the course with the new preview URL
+                const updatedCourse = await Course.findByIdAndUpdate(
+                    courseObjectId,
+                    { $set: { preview: uploadResult.secure_url } },
+                    { new: true }
+                );
+
+                return res.status(200).json({
+                    message: 'Course preview updated successfully',
+                    course: updatedCourse
+                });
+
             }
-
-            // Generate a unique public ID for the new preview using course ID and current timestamp
-            const publicId = `coursePreview_${profile.name?.split(' ')[0]}_${courseId}_${Date.now()}`;
-
-            // Upload the new file to cloud storage (assuming you're using Cloudinary or a similar service)
-            const uploadResult = await uploadCousePreview(req.file.buffer, publicId);
-
-            // Update the course with the new preview URL
-            const updatedCourse = await Course.findByIdAndUpdate(
-                courseObjectId,
-                { $set: { preview: uploadResult.secure_url } },
-                { new: true }
-            );
-
-            return res.status(200).json({
-                message: 'Course preview updated successfully',
-                course: updatedCourse
-            });
-
         }
     } catch (error) {
         console.error('Error updating course preview:', error);
