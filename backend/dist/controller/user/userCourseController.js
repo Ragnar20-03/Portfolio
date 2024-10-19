@@ -72,7 +72,7 @@ const userUpdateCourseController = (req, res) => __awaiter(void 0, void 0, void 
             return res.status(403).json({ message: 'This course is not associated with your profile' });
         }
         // Extract the updated course details from the request body
-        const { name, description, technologies, tutor, platform, year, preview } = req.body;
+        const { name, description, technologies, tutor, platform, year } = req.body;
         // Update the course details
         const updatedCourse = yield schema_1.Course.findByIdAndUpdate(courseId, {
             name,
@@ -81,7 +81,6 @@ const userUpdateCourseController = (req, res) => __awaiter(void 0, void 0, void 
             tutor,
             platform,
             year,
-            preview,
         }, { new: true, runValidators: true } // Options to return the updated document and validate the fields
         );
         if (!updatedCourse) {

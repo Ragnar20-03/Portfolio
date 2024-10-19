@@ -88,7 +88,7 @@ const userUpdateCertificationController = (req, res) => __awaiter(void 0, void 0
                 organization,
                 rank: rank || '', // Optional field, default to empty string if not provided
                 year,
-                preview: preview || '#' // Default preview if not provided
+                // preview: preview || '#' // Default preview if not provided
             }
         }, { new: true, runValidators: true } // Return updated doc, apply validation
         );

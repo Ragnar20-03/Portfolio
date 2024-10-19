@@ -70,7 +70,7 @@ export const userUpdateCourseController = async (req: Request, res: Response) =>
         }
 
         // Extract the updated course details from the request body
-        const { name, description, technologies, tutor, platform, year, preview } = req.body;
+        const { name, description, technologies, tutor, platform, year } = req.body;
 
         // Update the course details
         const updatedCourse = await Course.findByIdAndUpdate(
@@ -82,7 +82,6 @@ export const userUpdateCourseController = async (req: Request, res: Response) =>
                 tutor,
                 platform,
                 year,
-                preview,
             },
             { new: true, runValidators: true }  // Options to return the updated document and validate the fields
         );

@@ -90,7 +90,7 @@ export const userUpdateCertificationController = async (req: Request, res: Respo
                     organization,
                     rank: rank || '', // Optional field, default to empty string if not provided
                     year,
-                    preview: preview || '#' // Default preview if not provided
+                    // preview: preview || '#' // Default preview if not provided
                 }
             },
             { new: true, runValidators: true } // Return updated doc, apply validation
