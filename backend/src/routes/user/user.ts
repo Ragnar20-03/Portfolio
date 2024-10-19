@@ -8,6 +8,7 @@ import { upload } from "../../config/cloudinary";
 import { Project } from "../../model/schema";
 import { userResumeController } from "../../controller/user/userResumeController";
 import { userAddCourseController, userAddPreviewController, userUpdateCourseController } from "../../controller/user/userAddCourseController";
+import { userAddCertificationController, userCertificationPreview } from "../../controller/user/userAddCertificationController";
 
 
 export const router = express.Router();
@@ -33,6 +34,13 @@ router.put('/updateEducation/:educationId', M_userTokenMiddleware, userUpdateEdu
 router.post('/addCourse', M_userTokenMiddleware, userAddCourseController)
 router.post('/updateCourse/:courseId', M_userTokenMiddleware, userUpdateCourseController)
 router.put('/addCoursePreview/:courseId', M_userTokenMiddleware, upload.single('file'), userAddPreviewController)
+
+
+// --------------------------------------------------------------------------------------------------------
+// Certification
+router.post('/addCertification', M_userTokenMiddleware, userAddCertificationController)
+router.put('/addCertificationPreview/:certificationId', M_userTokenMiddleware, upload.single('file'), userCertificationPreview)
+// router.put('/addCoursePreview/:courseId', M_userTokenMiddleware, upload.single('file'), userAddPreviewController)
 
 // --------------------------------------------------------------------------------------------------------
 // resume 

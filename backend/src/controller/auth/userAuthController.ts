@@ -74,7 +74,7 @@ export const userVerifyOtp_RegisterController = async (req: Request, res: Respon
                 linkedin: '', // Default empty LinkedIn
                 skills: [], // Default empty skills array
                 projects: [], // Default empty projects array
-                education: [], // Default empty education array
+                education: null, // Default empty education array
                 certifications: [], // Default empty certifications array
                 courses: [], // Default empty courses array
                 competitions: [], // Default empty competitions array

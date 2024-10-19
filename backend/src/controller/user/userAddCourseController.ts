@@ -10,7 +10,7 @@ export const userAddCourseController = async (req: Request, res: Response) => {
         const profileId = req.profileId;  // Assuming you're using middleware to get profileId
 
         // Extract the course details from the request body
-        const { name, description, technologies, tutor, platform, year, preview } = req.body;
+        const { name, description, technologies, tutor, platform, year } = req.body;
 
         // Validate if profileId exists
         const profile = await Profile.findById(profileId);
@@ -26,7 +26,7 @@ export const userAddCourseController = async (req: Request, res: Response) => {
             tutor,
             platform,
             year,
-            preview,
+            preview: "#"
         });
 
         // Add the new course's ID to the profile's courses array
@@ -146,6 +146,11 @@ export const userAddPreviewController = async (req: Request, res: Response) => {
                 );
 
                 return res.status(200).json({ message: "Preview removed successfully!" });
+            }
+            else {
+                return res.status(200).json({
+                    msg: "File Not Found"
+                })
             }
         }
         else {

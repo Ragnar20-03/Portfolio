@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express"
+import express, { Request, RequestHandler, Response } from "express"
 import { PORT } from "./config/dotenv";
 import { connect_db } from "./config/db";
 import { cloudinary_start } from "./config/cloudinary";
@@ -19,6 +19,8 @@ app.use('/api/auth/get-otp', authApiLimiter)
 app.use('/api/auth/verify-otp', authApiLimiter)
 app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
+
+
 
 
 app.listen(PORT, async () => {

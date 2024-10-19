@@ -21,7 +21,7 @@ const userAddCourseController = (req, res) => __awaiter(void 0, void 0, void 0, 
         const authId = req.authId; // Assuming you're using middleware to get authId
         const profileId = req.profileId; // Assuming you're using middleware to get profileId
         // Extract the course details from the request body
-        const { name, description, technologies, tutor, platform, year, preview } = req.body;
+        const { name, description, technologies, tutor, platform, year } = req.body;
         // Validate if profileId exists
         const profile = yield schema_1.Profile.findById(profileId);
         if (!profile) {
@@ -35,7 +35,7 @@ const userAddCourseController = (req, res) => __awaiter(void 0, void 0, void 0, 
             tutor,
             platform,
             year,
-            preview,
+            preview: "#"
         });
         // Add the new course's ID to the profile's courses array
         yield schema_1.Profile.findByIdAndUpdate(profileId, {
@@ -135,6 +135,11 @@ const userAddPreviewController = (req, res) => __awaiter(void 0, void 0, void 0,
                 { new: true });
                 return res.status(200).json({ message: "Preview removed successfully!" });
             }
+            else {
+                return res.status(200).json({
+                    msg: "File Not Found"
+                });
+            }
         }
         else {
             // Validate the uploaded file if a file is provided
@@ -148,17 +153,17 @@ const userAddPreviewController = (req, res) => __awaiter(void 0, void 0, void 0,
                 if (prevPublicId) {
                     yield (0, cloudinary_1.removeCoursePreview)(prevPublicId); // Function to remove the preview from cloud storage
                 }
+                // Generate a unique public ID for the new preview using course ID and current timestamp
+                const publicId = `coursePreview_${(_c = profile.name) === null || _c === void 0 ? void 0 : _c.split(' ')[0]}_${courseId}_${Date.now()}`;
+                // Upload the new file to cloud storage (assuming you're using Cloudinary or a similar service)
+                const uploadResult = yield (0, cloudinary_1.uploadCousePreview)(req.file.buffer, publicId);
+                // Update the course with the new preview URL
+                const updatedCourse = yield schema_1.Course.findByIdAndUpdate(courseObjectId, { $set: { preview: uploadResult.secure_url } }, { new: true });
+                return res.status(200).json({
+                    message: 'Course preview updated successfully',
+                    course: updatedCourse
+                });
             }
-            // Generate a unique public ID for the new preview using course ID and current timestamp
-            const publicId = `coursePreview_${(_c = profile.name) === null || _c === void 0 ? void 0 : _c.split(' ')[0]}_${courseId}_${Date.now()}`;
-            // Upload the new file to cloud storage (assuming you're using Cloudinary or a similar service)
-            const uploadResult = yield (0, cloudinary_1.uploadCousePreview)(req.file.buffer, publicId);
-            // Update the course with the new preview URL
-            const updatedCourse = yield schema_1.Course.findByIdAndUpdate(courseObjectId, { $set: { preview: uploadResult.secure_url } }, { new: true });
-            return res.status(200).json({
-                message: 'Course preview updated successfully',
-                course: updatedCourse
-            });
         }
     }
     catch (error) {
