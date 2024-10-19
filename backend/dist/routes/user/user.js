@@ -19,10 +19,11 @@ exports.router.put('/updateAvatar', userMiddleware_1.M_userTokenMiddleware, clou
 // Project
 exports.router.post('/addProject', userMiddleware_1.M_userTokenMiddleware, userProjectController_1.userAddProjectController);
 exports.router.put('/updateProject/:projectId', userMiddleware_1.M_userTokenMiddleware, userProjectController_1.userUpdateProjectController);
-exports.router.put('/images/:projectId', userMiddleware_1.M_userTokenMiddleware, cloudinary_1.upload.array('images', 3), userProjectController_1.userProjectImageController);
+exports.router.put('/projectImages/:projectId', userMiddleware_1.M_userTokenMiddleware, cloudinary_1.upload.array('images', 3), userProjectController_1.userProjectImageController);
 // --------------------------------------------------------------------------------------------------------
 // education
 exports.router.post('/addEducation', userMiddleware_1.M_userTokenMiddleware, userEducationController_1.userAddEducationController);
+exports.router.put('/updateEducation/:educationId', userMiddleware_1.M_userTokenMiddleware, userEducationController_1.userUpdateEducationController);
 // --------------------------------------------------------------------------------------------------------
 // resume 
 exports.router.post('/resume', userMiddleware_1.M_userTokenMiddleware, cloudinary_1.upload.single('file'), userResumeController_1.userResumeController);

@@ -1,23 +1,16 @@
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
 import "./App.css";
-import Portfolio from "./pages/Portfolio";
-
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import RegisterPage from "./pages/Register";
-import LoginPage from "./pages/Login";
+import { Hotel } from "./Hotel";
 
 function App() {
+  const [count, setCount] = useState(0);
+
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Portfolio />} />
-          <Route path="/:profileId" element={<Portfolio />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/login" element={<LoginPage />} />
-        </Routes>
-      </BrowserRouter>
-
-      {/* <div> Welcome </div> */}
+      <h1 className="text-3xl font-bold underline">Hello world!</h1>
+      <Hotel />
     </>
   );
 }

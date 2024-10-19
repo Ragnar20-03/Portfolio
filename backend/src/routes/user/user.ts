@@ -2,8 +2,8 @@ import express from "express";
 
 import { userGetProfileDetailsController, userUpdateAvatarController, userUpdateProfileController } from "../../controller/user/userProfileController";
 import { M_userTokenMiddleware } from "../../middlewares/userMiddleware";
-import { userAddProjectController, userUpdateProjectController } from "../../controller/user/userProjectController";
-import { userAddEducationController } from "../../controller/user/userEducationController";
+import { userAddProjectController, userProjectImageController, userUpdateProjectController } from "../../controller/user/userProjectController";
+import { userAddEducationController, userUpdateEducationController } from "../../controller/user/userEducationController";
 import { upload } from "../../config/cloudinary";
 import { Project } from "../../model/schema";
 import { userResumeController } from "../../controller/user/userResumeController";
@@ -20,11 +20,12 @@ router.put('/updateAvatar', M_userTokenMiddleware, upload.single('file'), userUp
 // Project
 router.post('/addProject', M_userTokenMiddleware, userAddProjectController)
 router.put('/updateProject/:projectId', M_userTokenMiddleware, userUpdateProjectController)
-// router.put('/images/:projectId', M_userTokenMiddleware, upload.array('images', 3), userProjectImageController)
+router.put('/projectImages/:projectId', M_userTokenMiddleware, upload.array('images', 3), userProjectImageController)
 
 // --------------------------------------------------------------------------------------------------------
 // education
 router.post('/addEducation', M_userTokenMiddleware, userAddEducationController)
+router.put('/updateEducation/:educationId', M_userTokenMiddleware, userUpdateEducationController)
 
 // --------------------------------------------------------------------------------------------------------
 // resume 

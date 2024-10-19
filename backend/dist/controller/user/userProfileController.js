@@ -75,6 +75,7 @@ const userUpdateProfileController = (req, res) => __awaiter(void 0, void 0, void
         }, {});
         // Update the profile
         const updatedProfile = yield schema_1.Profile.findByIdAndUpdate(profileId, { $set: updateFields }, { new: true, runValidators: true });
+        console.log("profile id is : ", updatedProfile === null || updatedProfile === void 0 ? void 0 : updatedProfile.name);
         if (!updatedProfile) {
             return res.status(404).json({ message: 'Profile not found' });
         }

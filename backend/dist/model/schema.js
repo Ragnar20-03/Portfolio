@@ -16,32 +16,32 @@ const projectSchema = new mongoose_1.Schema({
     images: [{ type: String, required: false }]
 });
 const collegeSchema = new mongoose_1.Schema({
-    degree: { type: String, required: false },
-    major: { type: String, required: false },
-    school: { type: String, required: false },
-    year: { type: String, required: false },
-    cgpa: { type: String, required: false },
-    courseWork: { type: String, required: false }
+    degree: String,
+    major: String,
+    school: String,
+    year: String,
+    cgpa: String,
+    courseWork: String
 });
 const std12thSchema = new mongoose_1.Schema({
-    degree: { type: String, required: false },
-    college: { type: String, required: false },
-    year: { type: String, required: false },
-    board: { type: String, required: false },
-    percentage: { type: String, required: false },
-    cetPercentile: { type: String },
-    courseWork: { type: String, required: false }
+    degree: String,
+    college: String,
+    year: String,
+    board: String,
+    percentage: String,
+    cetPercentile: String,
+    courseWork: String
 });
 const schoolSchema = new mongoose_1.Schema({
-    degree: { type: String, required: false },
-    school: { type: String, required: false },
-    year: { type: String, required: false },
-    board: { type: String, required: false },
-    percentage: { type: String, required: false },
-    courseWork: { type: String, required: false }
+    degree: String,
+    school: String,
+    year: String,
+    board: String,
+    percentage: String,
+    courseWork: String
 });
 const educationSchema = new mongoose_1.Schema({
-    college: { type: collegeSchema, required: false },
+    college: collegeSchema,
     std12th: std12thSchema,
     school: schoolSchema
 });
@@ -89,7 +89,7 @@ const profileSchema = new mongoose_1.Schema({
     skills: [skillSchema], // Array of Skill subdocuments
     resume: { type: String, default: "" },
     projects: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Project' }], // Array of Project object IDs
-    education: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Education' }], // Array of Education object IDs
+    education: { type: mongoose_1.Schema.Types.ObjectId, ref: 'Education' }, // Array of Education object IDs
     certifications: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Certification' }], // Array of Certification object IDs
     courses: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Course' }], // Array of Course object IDs
     competitions: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Competition' }], // Array of Competition object IDs
