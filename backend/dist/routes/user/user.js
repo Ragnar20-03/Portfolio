@@ -11,6 +11,7 @@ const userProjectController_1 = require("../../controller/user/userProjectContro
 const userEducationController_1 = require("../../controller/user/userEducationController");
 const cloudinary_1 = require("../../config/cloudinary");
 const userResumeController_1 = require("../../controller/user/userResumeController");
+const userAddCourseController_1 = require("../../controller/user/userAddCourseController");
 exports.router = express_1.default.Router();
 exports.router.get('/details/:profileId', userProfileController_1.userGetProfileDetailsController);
 exports.router.put('/updateProfile', userMiddleware_1.M_userTokenMiddleware, userProfileController_1.userUpdateProfileController);
@@ -24,6 +25,11 @@ exports.router.put('/projectImages/:projectId', userMiddleware_1.M_userTokenMidd
 // education
 exports.router.post('/addEducation', userMiddleware_1.M_userTokenMiddleware, userEducationController_1.userAddEducationController);
 exports.router.put('/updateEducation/:educationId', userMiddleware_1.M_userTokenMiddleware, userEducationController_1.userUpdateEducationController);
+// --------------------------------------------------------------------------------------------------------
+// Course
+exports.router.post('/addCourse', userMiddleware_1.M_userTokenMiddleware, userAddCourseController_1.userAddCourseController);
+exports.router.post('/updateCourse/:courseId', userMiddleware_1.M_userTokenMiddleware, userAddCourseController_1.userUpdateCourseController);
+exports.router.put('/addCoursePreview/:courseId', userMiddleware_1.M_userTokenMiddleware, cloudinary_1.upload.single('file'), userAddCourseController_1.userAddPreviewController);
 // --------------------------------------------------------------------------------------------------------
 // resume 
 exports.router.post('/resume', userMiddleware_1.M_userTokenMiddleware, cloudinary_1.upload.single('file'), userResumeController_1.userResumeController);

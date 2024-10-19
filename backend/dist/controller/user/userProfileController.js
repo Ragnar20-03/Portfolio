@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userRemoveAvatarController = exports.userUpdateAvatarController = exports.userUpdateProfileController = exports.userGetProfileDetailsController = void 0;
+exports.userUpdateAvatarController = exports.userUpdateProfileController = exports.userGetProfileDetailsController = void 0;
 const schema_1 = require("../../model/schema");
 const mongoose_1 = __importDefault(require("mongoose"));
 const cloudinary_1 = require("../../services/cloudinary");
@@ -94,39 +94,55 @@ const userUpdateAvatarController = (req, res) => __awaiter(void 0, void 0, void 
     var _a, _b, _c;
     try {
         const profileId = req.profileId;
+        // Find the profile by profileId
         const profile = yield schema_1.Profile.findOne({ _id: profileId });
         if (!profile) {
-            return res.status(404).json({ msg: "Profile not found!" });
+            return res.status(404).json({ message: "Profile not found!" });
         }
-        if (!req.file) {
-            return res.status(400).json({ msg: "No file found!" });
-        }
+        // Get the previous avatar URL (if exists)
         const prevAvatar = profile.avatar;
+        // Case 1: No file is provided, remove the current avatar if it exists
+        if (!req.file) {
+            if (prevAvatar) {
+                const prevPublicId = (_a = prevAvatar.split('/').pop()) === null || _a === void 0 ? void 0 : _a.split('.')[0]; // Extract public ID from the URL
+                if (prevPublicId) {
+                    yield (0, cloudinary_1.removeAvatar)(prevPublicId); // Remove previous avatar from cloud storage
+                }
+                // Update the profile by removing the avatar field
+                yield schema_1.Profile.updateOne({ _id: profileId }, { $set: { avatar: "#" } } // Remove avatar field from the profile
+                );
+                return res.status(200).json({ message: "Avatar removed successfully" });
+            }
+            else {
+                return res.status(400).json({ message: "No avatar to remove!" });
+            }
+        }
+        // Case 2: A file is provided, validate it and update the avatar
         const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
         if (!allowedMimeTypes.includes(req.file.mimetype)) {
-            return res.status(400).json({ msg: "Only image files (JPEG, PNG, GIF, WebP) are allowed!" });
+            return res.status(400).json({ message: "Only image files (JPEG, PNG, GIF, WebP) are allowed!" });
         }
-        // Generate a unique public ID using profile ID and current timestamp
-        const publicId = `avatar_${(_a = profile.name) === null || _a === void 0 ? void 0 : _a.split(' ')[0]}-${(_b = profile.name) === null || _b === void 0 ? void 0 : _b.split(' ')[1]}_${Date.now()}`;
-        // Upload the new avatar
+        // Generate a unique public ID using the profile name and current timestamp
+        const publicId = `avatar_${(_b = profile.name) === null || _b === void 0 ? void 0 : _b.split(' ')[0]}_${Date.now()}`;
+        // Upload the new avatar to cloud storage
         const uploadResult = yield (0, cloudinary_1.uploadAvatar)(req.file.buffer, publicId);
-        // Update only the avatar field in the database
-        yield schema_1.Profile.updateOne({ _id: profileId }, { $set: { avatar: uploadResult.secure_url } });
-        // Delete the previous avatar from Cloudinary if it exists
+        // Delete the previous avatar from cloud storage if it exists
         if (prevAvatar) {
             const prevPublicId = (_c = prevAvatar.split('/').pop()) === null || _c === void 0 ? void 0 : _c.split('.')[0];
             if (prevPublicId) {
-                yield (0, cloudinary_1.removeAvatar)(prevPublicId);
+                yield (0, cloudinary_1.removeAvatar)(prevPublicId); // Remove previous avatar from cloud storage
             }
         }
-        return res.json({ message: "Avatar updated successfully", avatar: uploadResult.secure_url });
+        // Update the profile with the new avatar URL
+        yield schema_1.Profile.updateOne({ _id: profileId }, { $set: { avatar: uploadResult.secure_url } });
+        return res.status(200).json({
+            message: "Avatar updated successfully",
+            avatar: uploadResult.secure_url
+        });
     }
     catch (error) {
-        console.error("Server error:", error);
-        return res.status(500).json({ message: 'Server error' });
+        console.error("Error updating avatar:", error);
+        return res.status(500).json({ message: "Server error" });
     }
 });
 exports.userUpdateAvatarController = userUpdateAvatarController;
-const userRemoveAvatarController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-});
-exports.userRemoveAvatarController = userRemoveAvatarController;

@@ -78,3 +78,30 @@ export const uploadImage = async (buffer: Buffer, publicId: string) => {
         throw error
     }
 }
+export const uploadCousePreview = (buffer: Buffer, publicId: string): Promise<any> => {
+    return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+            {
+                folder: 'uploads/course',
+                public_id: publicId,
+                overwrite: true,
+
+            },
+            (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            }
+        );
+        stream.end(buffer);
+    });
+};
+
+
+export const removeCoursePreview = async (prevPublicId: string | any) => {
+    try {
+        await cloudinary.uploader.destroy(`uploads/course/${prevPublicId}`);
+        console.log(`Previous avatar removed: ${prevPublicId}`);
+    } catch (deleteError) {
+        console.error("Error deleting previous avatar:", deleteError);
+    }
+}

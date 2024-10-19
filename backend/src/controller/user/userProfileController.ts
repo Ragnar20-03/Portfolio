@@ -115,53 +115,69 @@ export const userUpdateAvatarController = async (req: Request, res: Response) =>
     try {
         const profileId = req.profileId;
 
+        // Find the profile by profileId
         const profile = await Profile.findOne({ _id: profileId });
         if (!profile) {
-            return res.status(404).json({ msg: "Profile not found!" });
+            return res.status(404).json({ message: "Profile not found!" });
         }
 
-        if (!req.file) {
-
-            return res.status(400).json({ msg: "No file found!" });
-        }
-
+        // Get the previous avatar URL (if exists)
         const prevAvatar = profile.avatar;
 
-        const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-        if (!allowedMimeTypes.includes(req.file.mimetype)) {
-            return res.status(400).json({ msg: "Only image files (JPEG, PNG, GIF, WebP) are allowed!" });
+        // Case 1: No file is provided, remove the current avatar if it exists
+        if (!req.file) {
+            if (prevAvatar) {
+                const prevPublicId = prevAvatar.split('/').pop()?.split('.')[0]; // Extract public ID from the URL
+                if (prevPublicId) {
+                    await removeAvatar(prevPublicId); // Remove previous avatar from cloud storage
+                }
+
+                // Update the profile by removing the avatar field
+                await Profile.updateOne(
+                    { _id: profileId },
+                    { $set: { avatar: "#" } } // Remove avatar field from the profile
+                );
+
+                return res.status(200).json({ message: "Avatar removed successfully" });
+            } else {
+                return res.status(400).json({ message: "No avatar to remove!" });
+            }
         }
 
-        // Generate a unique public ID using profile ID and current timestamp
-        const publicId = `avatar_${profile.name?.split(' ')[0]}-${profile.name?.split(' ')[1]}_${Date.now()}`;
+        // Case 2: A file is provided, validate it and update the avatar
+        const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        if (!allowedMimeTypes.includes(req.file.mimetype)) {
+            return res.status(400).json({ message: "Only image files (JPEG, PNG, GIF, WebP) are allowed!" });
+        }
 
+        // Generate a unique public ID using the profile name and current timestamp
+        const publicId = `avatar_${profile.name?.split(' ')[0]}_${Date.now()}`;
 
-
-        // Upload the new avatar
+        // Upload the new avatar to cloud storage
         const uploadResult = await uploadAvatar(req.file.buffer, publicId);
 
-        // Update only the avatar field in the database
+        // Delete the previous avatar from cloud storage if it exists
+        if (prevAvatar) {
+            const prevPublicId = prevAvatar.split('/').pop()?.split('.')[0];
+            if (prevPublicId) {
+                await removeAvatar(prevPublicId); // Remove previous avatar from cloud storage
+            }
+        }
+
+        // Update the profile with the new avatar URL
         await Profile.updateOne(
             { _id: profileId },
             { $set: { avatar: uploadResult.secure_url } }
         );
 
-        // Delete the previous avatar from Cloudinary if it exists
-        if (prevAvatar) {
-            const prevPublicId = prevAvatar.split('/').pop()?.split('.')[0];
-            if (prevPublicId) {
-                await removeAvatar(prevPublicId)
-            }
-        }
-
-        return res.json({ message: "Avatar updated successfully", avatar: uploadResult.secure_url });
+        return res.status(200).json({
+            message: "Avatar updated successfully",
+            avatar: uploadResult.secure_url
+        });
     } catch (error) {
-        console.error("Server error:", error);
-        return res.status(500).json({ message: 'Server error' });
+        console.error("Error updating avatar:", error);
+        return res.status(500).json({ message: "Server error" });
     }
 };
 
 
-export const userRemoveAvatarController = async (req: Request, res: Response) => {
-
-}
