@@ -8,12 +8,10 @@ export const userAddEducationController = async (req: Request, res: Response) =>
         const profileId = req.profileId;
 
         // Extract education details from the request body
-        const { college, std12th, school } = req.body.education;
+        const { collegeName, degree, place, duration, percentage } = req.body;
 
         const newEducation = {
-            college: college || {},
-            std12th: std12th || {},
-            school: school || {}
+            collegeName, degree, place, duration, percentage
         };
 
         // Update the profile with the new education information
@@ -22,8 +20,8 @@ export const userAddEducationController = async (req: Request, res: Response) =>
             console.log("Addeducation is : ", addEducation);
             const updatedProfile = await Profile.findByIdAndUpdate(
                 new mongoose.Types.ObjectId(profileId),
-                { $set: { education: addEducation } },
-                { new: true, runValidators: true }
+                { $push: { education: addEducation._id } },
+                { new: true }
             );
 
             if (!updatedProfile) {
@@ -35,7 +33,7 @@ export const userAddEducationController = async (req: Request, res: Response) =>
             });
         }
         else {
-            res.status(500).json({ message: 'Failed' });
+            res.status(500).json({ message: 'Unable to add Education' });
         }
 
 
@@ -49,11 +47,10 @@ export const userAddEducationController = async (req: Request, res: Response) =>
 export const userUpdateEducationController = async (req: Request, res: Response) => {
     try {
         const profileId = req.profileId;  // Get the profile ID from request (assuming it's set in middleware)
-        const educationId = req.params.educationId
-
+        const educationId = req.params.educationId;  // Get the education ID from request params
 
         // Extract education details from the request body
-        const { college, std12th, school } = req.body.education;
+        const { collegeName, degree, place, duration, percentage } = req.body;
 
         // Validate the profile exists
         const profile = await Profile.findById(profileId);
@@ -61,27 +58,35 @@ export const userUpdateEducationController = async (req: Request, res: Response)
             return res.status(404).json({ message: 'Profile not found' });
         }
 
+        // Check if the educationId is associated with the profile
+        const isEducationAssociated = profile.education.includes(new mongoose.Types.ObjectId(educationId));
+        if (!isEducationAssociated) {
+            return res.status(403).json({ message: 'This education entry is not associated with your profile' });
+        }
+
         // Prepare the updated education object
         const updatedData = {
-            college: college || {},
-            std12th: std12th || {},
-            school: school || {}
+            collegeName,
+            degree,
+            place,
+            duration,
+            percentage
         };
 
+        // Update the education document with new data
+        const updatedEducation = await Education.findByIdAndUpdate(
+            educationId,
+            { $set: updatedData },
+            { new: true }
+        );
 
-        let updateEducation = await Education.findByIdAndUpdate(educationId, { $set: updatedData }, { new: true })
-
-
-        // Update the education details of the profile
-
-
-        if (!updateEducation) {
-            return res.status(404).json({ message: 'Failed to update profile' });
+        if (!updatedEducation) {
+            return res.status(404).json({ message: 'Education not found' });
         }
 
         return res.status(200).json({
-            msg: 'Education updated successfully',
-            profile: updateEducation
+            message: 'Education updated successfully',
+            education: updatedEducation
         });
 
     } catch (error) {
@@ -89,3 +94,4 @@ export const userUpdateEducationController = async (req: Request, res: Response)
         return res.status(500).json({ message: 'Internal server error' });
     }
 };
+

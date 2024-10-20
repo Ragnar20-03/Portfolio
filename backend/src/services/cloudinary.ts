@@ -133,3 +133,30 @@ export const removeCertificationPreview = async (prevPublicId: string | any) => 
         console.error("Error deleting previous avatar:", deleteError);
     }
 }
+
+export const uploadCompetitionCertificate = (buffer: Buffer, publicId: string): Promise<any> => {
+    return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+            {
+                folder: 'uploads/competition',
+                public_id: publicId,
+                overwrite: true,
+
+            },
+            (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            }
+        );
+        stream.end(buffer);
+    });
+};
+
+export const removeCompetitionCertificate = async (prevPublicId: string | any) => {
+    try {
+        await cloudinary.uploader.destroy(`uploads/competition/${prevPublicId}`);
+        console.log(`Previous avatar removed: ${prevPublicId}`);
+    } catch (deleteError) {
+        console.error("Error deleting previous avatar:", deleteError);
+    }
+}

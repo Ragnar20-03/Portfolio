@@ -112,7 +112,7 @@ export const userUpdateCertificationController = async (req: Request, res: Respo
 
 
 
-export const userCertificationPreview = async (req: Request, res: Response) => {
+export const userCertificationPreviewController = async (req: Request, res: Response) => {
     try {
         const profileId = req.profileId;
         const certificationId = req.params.certificationId;

@@ -8,7 +8,9 @@ import { upload } from "../../config/cloudinary";
 import { Project } from "../../model/schema";
 import { userResumeController } from "../../controller/user/userResumeController";
 import { userAddCourseController, userAddPreviewController, userUpdateCourseController } from "../../controller/user/userCourseController";
-import { userAddCertificationController, userCertificationPreview, userUpdateCertificationController } from "../../controller/user/userCertificationController";
+import { userAddCertificationController, userCertificationPreviewController, userUpdateCertificationController } from "../../controller/user/userCertificationController";
+import { userAddCompetitionController, userCompetitionPreviewController, userUpdateCompetitionController } from "../../controller/user/userCompetitionController";
+import { userAddExtraCurricularController, userUpdateExtracurricular } from "../../controller/user/userExtracurricularController";
 
 
 export const router = express.Router();
@@ -35,13 +37,25 @@ router.post('/addCourse', M_userTokenMiddleware, userAddCourseController)
 router.post('/updateCourse/:courseId', M_userTokenMiddleware, userUpdateCourseController)
 router.put('/addCoursePreview/:courseId', M_userTokenMiddleware, upload.single('file'), userAddPreviewController)
 
-
 // --------------------------------------------------------------------------------------------------------
 // Certification
 router.post('/addCertification', M_userTokenMiddleware, userAddCertificationController)
 router.put('/updateCertification/:certificationId', M_userTokenMiddleware, userUpdateCertificationController)
-router.put('/addCertificationPreview/:certificationId', M_userTokenMiddleware, upload.single('file'), userCertificationPreview)
+router.put('/addCertificationPreview/:certificationId', M_userTokenMiddleware, upload.single('file'), userCertificationPreviewController)
 // router.put('/addCoursePreview/:courseId', M_userTokenMiddleware, upload.single('file'), userAddPreviewController)
+
+
+// --------------------------------------------------------------------------------------------------------
+// Competition
+router.post('/addCompetition', M_userTokenMiddleware, userAddCompetitionController)
+router.put('/updateCompetition/:competitionId', M_userTokenMiddleware, userUpdateCompetitionController)
+router.put('/addCompetitionPreview/:competitionId', M_userTokenMiddleware, upload.single('file'), userCompetitionPreviewController)
+
+// --------------------------------------------------------------------------------------------------------
+// Extracurricular
+router.post('/addExtracurricular', M_userTokenMiddleware, userAddExtraCurricularController)
+router.put('/updateExtracurricular/:extracurricularId', M_userTokenMiddleware, userUpdateExtracurricular)
+// router.put('/addCompetitionPreview/:competitionId', M_userTokenMiddleware, upload.single('file'), userCompetitionPreviewController)
 
 // --------------------------------------------------------------------------------------------------------
 // resume 

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userCertificationPreview = exports.userUpdateCertificationController = exports.userAddCertificationController = void 0;
+exports.userCertificationPreviewController = exports.userUpdateCertificationController = exports.userAddCertificationController = void 0;
 const schema_1 = require("../../model/schema");
 const cloudinary_1 = require("../../services/cloudinary");
 const mongoose_1 = __importDefault(require("mongoose"));
@@ -106,7 +106,7 @@ const userUpdateCertificationController = (req, res) => __awaiter(void 0, void 0
     }
 });
 exports.userUpdateCertificationController = userUpdateCertificationController;
-const userCertificationPreview = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const userCertificationPreviewController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c;
     try {
         const profileId = req.profileId;
@@ -178,4 +178,4 @@ const userCertificationPreview = (req, res) => __awaiter(void 0, void 0, void 0,
         return res.status(500).json({ message: 'Server error' });
     }
 });
-exports.userCertificationPreview = userCertificationPreview;
+exports.userCertificationPreviewController = userCertificationPreviewController;

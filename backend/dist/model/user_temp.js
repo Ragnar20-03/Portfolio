@@ -25,31 +25,11 @@ const data = {
         },
     ],
     education: {
-        college: {
-            degree: "Degree Name", // Placeholder for degree
-            major: "Major Subject", // Placeholder for major
-            school: "College Name", // Placeholder for college name
-            year: "Year Range", // Placeholder for year of study
-            cgpa: "CGPA", // Placeholder for CGPA
-            courseWork: "Relevant coursework", // Placeholder for coursework
-        },
-        std12th: {
-            degree: "12th Standard Degree", // Placeholder for 12th standard degree
-            college: "College Name", // Placeholder for college name
-            year: "Year Range", // Placeholder for year of study
-            board: "Board Name", // Placeholder for education board
-            percentage: "Percentage", // Placeholder for percentage
-            cetPercentile: "CET Percentile", // Placeholder for CET percentile
-            courseWork: "Relevant coursework", // Placeholder for coursework
-        },
-        school: {
-            degree: "10th Standard Degree", // Placeholder for 10th standard degree
-            school: "School Name", // Placeholder for school name
-            year: "Year Range", // Placeholder for year of study
-            board: "Board Name", // Placeholder for education board
-            percentage: "Percentage", // Placeholder for percentage
-            courseWork: "Relevant coursework", // Placeholder for coursework
-        },
+        "collegeName": " KBH ",
+        "degree": "10th",
+        "place": "Nashik",
+        "duration": "2018- 2019",
+        "percentage": "9.4"
     },
     certifications: [
         {

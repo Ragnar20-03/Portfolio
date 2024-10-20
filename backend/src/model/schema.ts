@@ -16,38 +16,51 @@ const projectSchema = new Schema({
     images: [{ type: String, required: false }]
 });
 
-const collegeSchema = new Schema({
-    degree: String,
-    major: String,
-    school: String,
-    year: String,
-    cgpa: String,
-    courseWork: String
-});
+// const collegeSchema = new Schema({
+//     degree: String,
+//     major: String,
+//     school: String,
+//     year: String,
+//     cgpa: String,
+//     courseWork: String
+// });
 
-const std12thSchema = new Schema({
-    degree: String,
-    college: String,
-    year: String,
-    board: String,
-    percentage: String,
-    cetPercentile: String,
-    courseWork: String
-});
+// const std12thSchema = new Schema({
+//     degree: String,
+//     college: String,
+//     year: String,
+//     board: String,
+//     percentage: String,
+//     cetPercentile: String,
+//     courseWork: String
+// });
 
-const schoolSchema = new Schema({
-    degree: String,
-    school: String,
-    year: String,
-    board: String,
-    percentage: String,
-    courseWork: String
-});
+// const schoolSchema = new Schema({
+//     degree: String,
+//     school: String,
+//     year: String,
+//     board: String,
+//     percentage: String,
+//     courseWork: String
+// });
 
 const educationSchema = new Schema({
-    college: collegeSchema,
-    std12th: std12thSchema,
-    school: schoolSchema
+    collegeName: {
+        type: String,
+
+    },
+    degree: {
+        type: String
+    },
+    place: {
+        type: String,
+    },
+    duration: {
+        type: String,
+    },
+    percentage: {
+        type: String,
+    }
 });
 
 
@@ -100,7 +113,7 @@ const profileSchema = new Schema({
     skills: [skillSchema], // Array of Skill subdocuments
     resume: { type: String, default: "" },
     projects: [{ type: Schema.Types.ObjectId, ref: 'Project' }], // Array of Project object IDs
-    education: { type: Schema.Types.ObjectId, ref: 'Education' }, // Array of Education object IDs
+    education: [{ type: Schema.Types.ObjectId, ref: 'Education' }], // Array of Education object IDs
     certifications: [{ type: Schema.Types.ObjectId, ref: 'Certification' }], // Array of Certification object IDs
     courses: [{ type: Schema.Types.ObjectId, ref: 'Course' }], // Array of Course object IDs
     competitions: [{ type: Schema.Types.ObjectId, ref: 'Competition' }], // Array of Competition object IDs

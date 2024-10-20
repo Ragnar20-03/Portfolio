@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeCertificationPreview = exports.uploadCertificatePreview = exports.removeCoursePreview = exports.uploadCousePreview = exports.uploadImage = exports.removeResume = exports.uploadResume = exports.removeAvatar = exports.uploadAvatar = void 0;
+exports.removeCompetitionCertificate = exports.uploadCompetitionCertificate = exports.removeCertificationPreview = exports.uploadCertificatePreview = exports.removeCoursePreview = exports.uploadCousePreview = exports.uploadImage = exports.removeResume = exports.uploadResume = exports.removeAvatar = exports.uploadAvatar = void 0;
 const cloudinary_1 = require("cloudinary");
 // Wrap the Cloudinary upload in a promise
 const uploadAvatar = (buffer, publicId) => {
@@ -138,3 +138,29 @@ const removeCertificationPreview = (prevPublicId) => __awaiter(void 0, void 0, v
     }
 });
 exports.removeCertificationPreview = removeCertificationPreview;
+const uploadCompetitionCertificate = (buffer, publicId) => {
+    return new Promise((resolve, reject) => {
+        const stream = cloudinary_1.v2.uploader.upload_stream({
+            folder: 'uploads/competition',
+            public_id: publicId,
+            overwrite: true,
+        }, (error, result) => {
+            if (error)
+                reject(error);
+            else
+                resolve(result);
+        });
+        stream.end(buffer);
+    });
+};
+exports.uploadCompetitionCertificate = uploadCompetitionCertificate;
+const removeCompetitionCertificate = (prevPublicId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield cloudinary_1.v2.uploader.destroy(`uploads/competition/${prevPublicId}`);
+        console.log(`Previous avatar removed: ${prevPublicId}`);
+    }
+    catch (deleteError) {
+        console.error("Error deleting previous avatar:", deleteError);
+    }
+});
+exports.removeCompetitionCertificate = removeCompetitionCertificate;

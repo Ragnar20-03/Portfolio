@@ -20,17 +20,15 @@ const userAddEducationController = (req, res) => __awaiter(void 0, void 0, void 
     try {
         const profileId = req.profileId;
         // Extract education details from the request body
-        const { college, std12th, school } = req.body.education;
+        const { collegeName, degree, place, duration, percentage } = req.body;
         const newEducation = {
-            college: college || {},
-            std12th: std12th || {},
-            school: school || {}
+            collegeName, degree, place, duration, percentage
         };
         // Update the profile with the new education information
         const addEducation = yield schema_1.Education.create(newEducation);
         if (addEducation) {
             console.log("Addeducation is : ", addEducation);
-            const updatedProfile = yield schema_1.Profile.findByIdAndUpdate(new mongoose_1.default.Types.ObjectId(profileId), { $set: { education: addEducation } }, { new: true, runValidators: true });
+            const updatedProfile = yield schema_1.Profile.findByIdAndUpdate(new mongoose_1.default.Types.ObjectId(profileId), { $push: { education: addEducation._id } }, { new: true });
             if (!updatedProfile) {
                 return res.status(404).json({ message: 'Profile not found' });
             }
@@ -40,7 +38,7 @@ const userAddEducationController = (req, res) => __awaiter(void 0, void 0, void 
             });
         }
         else {
-            res.status(500).json({ message: 'Failed' });
+            res.status(500).json({ message: 'Unable to add Education' });
         }
     }
     catch (error) {
@@ -52,28 +50,35 @@ exports.userAddEducationController = userAddEducationController;
 const userUpdateEducationController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const profileId = req.profileId; // Get the profile ID from request (assuming it's set in middleware)
-        const educationId = req.params.educationId;
+        const educationId = req.params.educationId; // Get the education ID from request params
         // Extract education details from the request body
-        const { college, std12th, school } = req.body.education;
+        const { collegeName, degree, place, duration, percentage } = req.body;
         // Validate the profile exists
         const profile = yield schema_1.Profile.findById(profileId);
         if (!profile) {
             return res.status(404).json({ message: 'Profile not found' });
         }
+        // Check if the educationId is associated with the profile
+        const isEducationAssociated = profile.education.includes(new mongoose_1.default.Types.ObjectId(educationId));
+        if (!isEducationAssociated) {
+            return res.status(403).json({ message: 'This education entry is not associated with your profile' });
+        }
         // Prepare the updated education object
         const updatedData = {
-            college: college || {},
-            std12th: std12th || {},
-            school: school || {}
+            collegeName,
+            degree,
+            place,
+            duration,
+            percentage
         };
-        let updateEducation = yield schema_1.Education.findByIdAndUpdate(educationId, { $set: updatedData }, { new: true });
-        // Update the education details of the profile
-        if (!updateEducation) {
-            return res.status(404).json({ message: 'Failed to update profile' });
+        // Update the education document with new data
+        const updatedEducation = yield schema_1.Education.findByIdAndUpdate(educationId, { $set: updatedData }, { new: true });
+        if (!updatedEducation) {
+            return res.status(404).json({ message: 'Education not found' });
         }
         return res.status(200).json({
-            msg: 'Education updated successfully',
-            profile: updateEducation
+            message: 'Education updated successfully',
+            education: updatedEducation
         });
     }
     catch (error) {
