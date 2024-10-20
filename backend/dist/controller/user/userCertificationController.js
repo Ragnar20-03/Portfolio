@@ -77,8 +77,8 @@ const userUpdateCertificationController = (req, res) => __awaiter(void 0, void 0
         // Extract the updated certification details from the request body
         const { logo, name, organization, rank, year, preview, } = req.body;
         // Validate necessary fields
-        if (!name || !organization || !year) {
-            return res.status(400).json({ message: 'Name, Organization, and Year are required!' });
+        if (!name || !organization) {
+            return res.status(400).json({ message: 'Name, Organization,  are required!' });
         }
         // Update the certification details
         const updatedCertification = yield schema_1.Certification.findByIdAndUpdate(certificationId, {
