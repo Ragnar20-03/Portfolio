@@ -27,7 +27,7 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, cookie_parser_1.default)()); // Use cookie-parser here
-app.use('/api/auth/get-otp', rateLimiter_1.authApiLimiter);
+// app.use('/api/auth/get-otp', authApiLimiter)
 app.use('/api/auth/verify-otp', rateLimiter_1.authApiLimiter);
 app.use('/api/auth', userAuth_1.authRouter);
 app.use('/api/user', user_1.router);
