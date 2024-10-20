@@ -76,8 +76,8 @@ export const userUpdateCertificationController = async (req: Request, res: Respo
         const { logo, name, organization, rank, year, preview, } = req.body;
 
         // Validate necessary fields
-        if (!name || !organization || !year) {
-            return res.status(400).json({ message: 'Name, Organization, and Year are required!' });
+        if (!name || !organization) {
+            return res.status(400).json({ message: 'Name, Organization,  are required!' });
         }
 
         // Update the certification details

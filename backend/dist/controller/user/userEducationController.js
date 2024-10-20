@@ -34,7 +34,7 @@ const userAddEducationController = (req, res) => __awaiter(void 0, void 0, void 
             }
             return res.status(200).json({
                 msg: 'Education added successfully',
-                profile: updatedProfile
+                updatedEducation: addEducation
             });
         }
         else {

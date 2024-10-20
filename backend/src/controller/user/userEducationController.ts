@@ -29,7 +29,7 @@ export const userAddEducationController = async (req: Request, res: Response) =>
             }
             return res.status(200).json({
                 msg: 'Education added successfully',
-                profile: updatedProfile
+                updatedEducation: addEducation
             });
         }
         else {
@@ -74,6 +74,7 @@ export const userUpdateEducationController = async (req: Request, res: Response)
         };
 
         // Update the education document with new data
+
         const updatedEducation = await Education.findByIdAndUpdate(
             educationId,
             { $set: updatedData },
