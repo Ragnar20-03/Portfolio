@@ -10,10 +10,23 @@ import cors from "cors"
 import cookieParser from "cookie-parser";
 import { authApiLimiter } from "./services/rateLimiter";
 const app = express();
-app.use(cors())
+app.use(cors({
+    origin: function (origin, callback) {
+        const allowedOriginPattern = /http:\/\/localhost:\d{4}|https:\/\/your-production-domain\.com/;
+
+        if (!origin) return callback(null, true); // Allow requests without origin, e.g., curl, Postman
+
+        if (allowedOriginPattern.test(origin)) {
+            callback(null, true);  // Origin matches the pattern
+        } else {
+            callback(new Error('Not allowed by CORS'));  // Origin is not allowed
+        }
+    },
+    credentials: true  // Allow credentials (cookies)
+}));
+app.use(cookieParser()); // Use cookie-parser here
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser()); // Use cookie-parser here
 
 // app.use('/api/auth/get-otp', authApiLimiter)
 app.use('/api/auth/verify-otp', authApiLimiter)

@@ -23,10 +23,23 @@ const cors_1 = __importDefault(require("cors"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const rateLimiter_1 = require("./services/rateLimiter");
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: function (origin, callback) {
+        const allowedOriginPattern = /http:\/\/localhost:\d{4}|https:\/\/your-production-domain\.com/;
+        if (!origin)
+            return callback(null, true); // Allow requests without origin, e.g., curl, Postman
+        if (allowedOriginPattern.test(origin)) {
+            callback(null, true); // Origin matches the pattern
+        }
+        else {
+            callback(new Error('Not allowed by CORS')); // Origin is not allowed
+        }
+    },
+    credentials: true // Allow credentials (cookies)
+}));
+app.use((0, cookie_parser_1.default)()); // Use cookie-parser here
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-app.use((0, cookie_parser_1.default)()); // Use cookie-parser here
 // app.use('/api/auth/get-otp', authApiLimiter)
 app.use('/api/auth/verify-otp', rateLimiter_1.authApiLimiter);
 app.use('/api/auth', userAuth_1.authRouter);
