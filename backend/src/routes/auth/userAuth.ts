@@ -7,3 +7,4 @@ export const authRouter = express.Router();
 authRouter.post('/get-otp', M_chechAuthRegisterData, userGetOtpController)
 authRouter.post('/verify-otp', M_chechAuthRegisterData, userVerifyOtp_RegisterController)
 authRouter.post('/login', userLoginController)
+

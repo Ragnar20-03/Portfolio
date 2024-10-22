@@ -15,11 +15,15 @@ const userCourseController_1 = require("../../controller/user/userCourseControll
 const userCertificationController_1 = require("../../controller/user/userCertificationController");
 const userCompetitionController_1 = require("../../controller/user/userCompetitionController");
 const userExtracurricularController_1 = require("../../controller/user/userExtracurricularController");
+const userGetAdminProfileController_1 = require("../../controller/user/userGetAdminProfileController");
 exports.router = express_1.default.Router();
+// ADmin Endpoint to get Details ;
+// --------------------------------------------------------------------------------------------------------
+exports.router.get('/details', userMiddleware_1.M_userTokenMiddleware, userGetAdminProfileController_1.userGetAdminProfileController);
+// --------------------------------------------------------------------------------------------------------
 exports.router.get('/details/:profileId', userProfileController_1.userGetProfileDetailsController);
 exports.router.put('/updateProfile', userMiddleware_1.M_userTokenMiddleware, userProfileController_1.userUpdateProfileController);
 exports.router.put('/updateAvatar', userMiddleware_1.M_userTokenMiddleware, cloudinary_1.upload.single('file'), userProfileController_1.userUpdateAvatarController);
-// --------------------------------------------------------------------------------------------------------
 // Project
 exports.router.post('/addProject', userMiddleware_1.M_userTokenMiddleware, userProjectController_1.userAddProjectController);
 exports.router.put('/updateProject/:projectId', userMiddleware_1.M_userTokenMiddleware, userProjectController_1.userUpdateProjectController);

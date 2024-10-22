@@ -11,16 +11,23 @@ import { userAddCourseController, userAddPreviewController, userUpdateCourseCont
 import { userAddCertificationController, userCertificationPreviewController, userUpdateCertificationController } from "../../controller/user/userCertificationController";
 import { userAddCompetitionController, userCompetitionPreviewController, userUpdateCompetitionController } from "../../controller/user/userCompetitionController";
 import { userAddExtraCurricularController, userUpdateExtracurricular } from "../../controller/user/userExtracurricularController";
+import { userGetAdminProfileController } from "../../controller/user/userGetAdminProfileController";
 
 
 export const router = express.Router();
 
+
+// ADmin Endpoint to get Details ;
+// --------------------------------------------------------------------------------------------------------
+
+router.get('/details', M_userTokenMiddleware, userGetAdminProfileController)
+
+// --------------------------------------------------------------------------------------------------------
 router.get('/details/:profileId', userGetProfileDetailsController)
 router.put('/updateProfile', M_userTokenMiddleware, userUpdateProfileController)
 router.put('/updateAvatar', M_userTokenMiddleware, upload.single('file'), userUpdateAvatarController)
 
 
-// --------------------------------------------------------------------------------------------------------
 // Project
 router.post('/addProject', M_userTokenMiddleware, userAddProjectController)
 router.put('/updateProject/:projectId', M_userTokenMiddleware, userUpdateProjectController)

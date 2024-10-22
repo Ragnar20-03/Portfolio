@@ -127,6 +127,7 @@ const userLoginController = (req, res) => __awaiter(void 0, void 0, void 0, func
                 res.cookie('token', token, { httpOnly: true, secure: true }); // Set cookie in the response
                 return res.status(200).json({
                     msg: "Login Successful ! ",
+                    _id: query.profileId
                 });
             }
             return res.status(401).json({

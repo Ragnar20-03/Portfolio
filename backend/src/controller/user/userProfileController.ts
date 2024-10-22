@@ -23,6 +23,7 @@ interface UpdateableProfileFields {
     skills?: Skill[]; // Array of Skill objects
 }
 
+
 export const userGetProfileDetailsController = async (req: Request, res: Response) => {
     try {
         const profileId = req.params.profileId;

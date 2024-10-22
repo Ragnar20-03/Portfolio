@@ -134,6 +134,7 @@ export const userLoginController = async (req: Request, res: Response) => {
 
                 return res.status(200).json({
                     msg: "Login Successful ! ",
+                    _id: query.profileId
                 })
             }
             return res.status(401).json({
