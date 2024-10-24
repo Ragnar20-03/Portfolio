@@ -23,29 +23,47 @@ function App() {
       .catch((err) => {
         console.log("error is : ", err);
       });
+
+    // axios
+    //   .get("http://localhost:5100/api/user/details", {
+    //     withCredentials: true,
+    //   })
+    //   .then((res) => {
+    //     console.log("response is : ", res);
+    //   });
   });
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>Choose file</h1>
+      <input
+        type="file"
+        name="file"
+        id=""
+        onChange={(e) => {
+          const formData = new FormData();
+          // Append the selected file to the FormData
+          e.target.files && e.target.files.length > 0
+            ? formData.append("file", e.target.files[0])
+            : // Send the file to the backend via Axios
+              console.log("hii");
+
+          axios
+            .put("http://localhost:5100/api/user/updateAvatar", formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+              withCredentials: true,
+            })
+            .then((response) => {
+              // Handle the response after a successful upload
+              console.log("Image uploaded successfully:", response.data);
+            })
+            .catch((error) => {
+              // Handle any errors during the upload
+              console.error("Error uploading image:", error);
+            });
+        }}
+      />
     </>
   );
 }

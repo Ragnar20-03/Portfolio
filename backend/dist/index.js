@@ -25,7 +25,7 @@ const rateLimiter_1 = require("./services/rateLimiter");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
     origin: function (origin, callback) {
-        const allowedOriginPattern = /http:\/\/localhost:\d{4}|https:\/\/your-production-domain\.com/;
+        const allowedOriginPattern = /http:\/\/localhost:\d{4}|https:\/\/your-production-domain\.com|https:\/\/rhqx4pwf-5100\.inc1\.devtunnels\.ms/;
         if (!origin)
             return callback(null, true); // Allow requests without origin, e.g., curl, Postman
         if (allowedOriginPattern.test(origin)) {

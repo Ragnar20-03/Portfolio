@@ -39,7 +39,9 @@ const schema_1 = require("../model/schema");
 const M_userTokenMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Check for cookie presence and value
+        console.log("response url is : ", req.originalUrl);
         let token = req.cookies['token'];
+        console.log("token is : ", token);
         if (!token) {
             return res.status(401).json({ msg: "UnAuthorized Request !" });
         }

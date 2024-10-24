@@ -13,7 +13,13 @@ interface JwtPayload {
 export const M_userTokenMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Check for cookie presence and value
+
+        console.log("response url is : ", req.originalUrl);
+
+
         let token = req.cookies['token'];
+
+        console.log("token is : ", token);
         if (!token) {
             return res.status(401).json({ msg: "UnAuthorized Request !" });
         }

@@ -110,7 +110,7 @@ export const uploadCertificatePreview = (buffer: Buffer, publicId: string): Prom
     return new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
             {
-                folder: 'uploads/course',
+                folder: 'uploads/certificate',
                 public_id: publicId,
                 overwrite: true,
 
@@ -127,7 +127,7 @@ export const uploadCertificatePreview = (buffer: Buffer, publicId: string): Prom
 
 export const removeCertificationPreview = async (prevPublicId: string | any) => {
     try {
-        await cloudinary.uploader.destroy(`uploads/course/${prevPublicId}`);
+        await cloudinary.uploader.destroy(`uploads/certificate/${prevPublicId}`);
         console.log(`Previous avatar removed: ${prevPublicId}`);
     } catch (deleteError) {
         console.error("Error deleting previous avatar:", deleteError);

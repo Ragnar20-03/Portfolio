@@ -115,7 +115,7 @@ exports.removeCoursePreview = removeCoursePreview;
 const uploadCertificatePreview = (buffer, publicId) => {
     return new Promise((resolve, reject) => {
         const stream = cloudinary_1.v2.uploader.upload_stream({
-            folder: 'uploads/course',
+            folder: 'uploads/certificate',
             public_id: publicId,
             overwrite: true,
         }, (error, result) => {
@@ -130,7 +130,7 @@ const uploadCertificatePreview = (buffer, publicId) => {
 exports.uploadCertificatePreview = uploadCertificatePreview;
 const removeCertificationPreview = (prevPublicId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield cloudinary_1.v2.uploader.destroy(`uploads/course/${prevPublicId}`);
+        yield cloudinary_1.v2.uploader.destroy(`uploads/certificate/${prevPublicId}`);
         console.log(`Previous avatar removed: ${prevPublicId}`);
     }
     catch (deleteError) {

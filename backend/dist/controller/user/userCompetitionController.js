@@ -115,6 +115,7 @@ const userCompetitionPreviewController = (req, res) => __awaiter(void 0, void 0,
     try {
         let profileId = req.profileId;
         let competitionId = req.params.competitionId;
+        console.log("reqched !");
         if (!mongoose_1.default.Types.ObjectId.isValid(competitionId)) {
             return res.status(400).json({
                 msg: "CompetitoinID is not valid"

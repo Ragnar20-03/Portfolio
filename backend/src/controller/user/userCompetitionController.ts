@@ -118,6 +118,7 @@ export const userCompetitionPreviewController = async (req: Request, res: Respon
     try {
         let profileId = req.profileId;
         let competitionId = req.params.competitionId;
+        console.log("reqched !");
 
         if (!mongoose.Types.ObjectId.isValid(competitionId)) {
             return res.status(400).json({

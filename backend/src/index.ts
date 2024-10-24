@@ -12,7 +12,7 @@ import { authApiLimiter } from "./services/rateLimiter";
 const app = express();
 app.use(cors({
     origin: function (origin, callback) {
-        const allowedOriginPattern = /http:\/\/localhost:\d{4}|https:\/\/your-production-domain\.com/;
+        const allowedOriginPattern = /http:\/\/localhost:\d{4}|https:\/\/your-production-domain\.com|https:\/\/rhqx4pwf-5100\.inc1\.devtunnels\.ms/;
 
         if (!origin) return callback(null, true); // Allow requests without origin, e.g., curl, Postman
 
@@ -24,6 +24,7 @@ app.use(cors({
     },
     credentials: true  // Allow credentials (cookies)
 }));
+
 app.use(cookieParser()); // Use cookie-parser here
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
