@@ -35,7 +35,9 @@ app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
 
 
-
+app.get('/', (req, res) => {
+    res.send("Express Backend it is !")
+})
 
 app.listen(PORT, async () => {
     let instance = OTP.getInstance();
